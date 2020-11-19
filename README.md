@@ -21,3 +21,9 @@ The name was suggested by Rick Hessman at Göttingen University (Germany) and th
 - supports API versions
 - observatories could provide data either manually, or with APIs
 - distributed (no single point of failure). Different sites could provide complete or partial service and only level 1 services is required.
+
+## General notes and comments
+
+### Note on IDs
+
+Most APIs will involve unique (within POLIS) IDs. To avoid any privacy issues and tracing by bad actors, all UUIDs should be random (version 4 as defined by other UUID standards). Swift-polis package by default generates random UUIDs.
