@@ -51,3 +51,7 @@ In order to launch a new POLIS site, data should be initialised using a known si
 ### Data formats
 Both JSON and XML data formats are supported by POLIS. Because of its richness, support for schema, and schema validation it is recommended to use XML whenever possible.
 
+### Date and Time formats
+
+All Date and Time formats must be in ISO8601 format and must be in UTC
+
