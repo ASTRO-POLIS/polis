@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.polis.observer/v0.1a">
+
+<!--========================================================================================================================-->
+<!--                                        Schema Management                                                               -->
+<!--========================================================================================================================-->
+<!--                                        DOCUMENTATION                                                                   -->                      
+
+	<xs:annotation>
+		<xs:documentation>
+			<name>POLIS - Public Observatory  Location and Information Service</name>
+			<revision version="0.1">
+				<authors>
+					<author>
+						<name>Georg Tuparev</name>
+						<email>tuparev@mac.com</email>
+					</author>
+				</authors>
+				<date>2020-11-20</date>
+				Initial version of the POLIS XML Schema. It defines only basic types of  the Level 1 services. The goal of this
+				version is to define only primitive POLIS provider discovery types and a basic list of observing sites. 
+				This version should be used only for experimental implementations. Mobile applications or Web-based services 
+				should not be publicly released, because most of the definition are expected to changed radically until first 
+				stable 1.0 version.
+			 </revision>
+		</xs:documentation>
+	</xs:annotation>
+	
+<!--                                        IMPORTS                                                                         -->
+<!--                                        INCLUDE                                                                         -->
+<!--                                        REDEFINE                                                                        -->
+
+<!--========================================================================================================================-->
+<!--                                        Model-Building Components                                                       -->
+<!--========================================================================================================================-->
+<!--                                        NOTATIONS                                                                       -->
+<!--                                        SIMPLE TYPES                                                                    -->
+<!--                                        COMPLEX TYPES                                                                   -->
+<!--                                        ROOT ELEMENT TYPE                                                               -->
+
+	<xs:element name="POLIS">
+		<xs:annotation>
+			<xs:documentation>The highest level element in an POLIS document.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="version" type="xs:string" use="required" fixed="0.1a"/>
+		</xs:complexType>
+	</xs:element>
+
+<!--                                        VALUE WITH UNITS COMPLEX TYPES                                                  -->
+<!--                                        MISC COMPLEX TYPES                                                              -->
+<!--                                        ATTRIBUTES                                                                      -->
+<!--                                        GROUPS                                                                          -->
+<!--                                        ELEMENTS                                                                        -->
+</xs:schema>

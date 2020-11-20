@@ -11,7 +11,7 @@ Each of these resources (dynamic or static) **must** contain the following infor
 
 - Name: The name of the provider, like `National Astronomical Observatory`
 - Optional description
-- ID: a UUID of the provider. It is recommended the UUID to be random (e.g. UUID version 4). Example for such ID is `F7814DEE-AC5D-433B-A9FA-85A37E716237`
+- UID: a UUID of the provider. It is recommended the UUID to be random (e.g. UUID version 4). Example for such ID is `F7814DEE-AC5D-433B-A9FA-85A37E716237`
 - Last update in ISO8601 format (e.g. `"2019-02-06T00:35:01.746Z"`)
 - Supported Protocol Levels: possible values are 1 .. 3. See main README.md for more
 - Supported API Versions: an array of strings representing Semantic Versions (should be sorted), (e.g. `["1.0", "1.2", 2.0"]`.
