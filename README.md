@@ -10,8 +10,6 @@ As the name suggests, the Public Observatory Location and Information Service pr
 
 To be listed, only the first level of services is required.
 
-The name was suggested by Rick Hessman at Göttingen University (Germany) and the service is developed and made publicly available by the [StarCluster](www.starcluster.app) team. The idea for the service has its origins with the RTML standard. The first experimental implementation was developed around 2012 based on RTML Dump and was inspired by discussions at several VO related conferences during 2007-2009.
-
 ## Goals
 
 - can list any type of facility: ground based, satellite, mobile, temporary (e.g. solar eclipse),...
@@ -55,3 +53,13 @@ Both JSON and XML data formats are supported by POLIS. Because of its richness, 
 
 All Date and Time formats must be in ISO8601 format and must be in UTC
 
+# History
+The initial idea for a POLIS like protocol was first discussed at one of the HTN (Heterogeneous Network of Telescopes) conferences that took place about a decade ago in Tucson (AZ) and Göttingen (Germany). Initially an agent-based system that negotiate the exchange of observation time was discussed.  The idea was to use RTML's `Dump` mode to describe the current status and capabilities of an observatory and to build a new negotiation protocol.
+
+Around 2012 the [StarCluster](www.starcluster.app) team developed a very primitive prototype that was able to exchange status information between two imaginary observatories, but no further development took place.
+
+The idea for such protocol was reborn in early 2019 when the StarCluster team started working on a new package of astronomy applications. In September 2020 [ASA](https://www.astrosysteme.com) and StarCluster worked together on a joined  bid for a new robotic telescope and it was during this period when the decision was made to start a new open source project with the goal to create a protocol and a database of modern observatories, monitor and report their status, and allow individual sites to negotiate automatically or with human support for observation time and joined observation schedules.
+
+Rick Hessman at Göttingen University (Germany) coined the name POLIS and introduced the StarCluster team to the work of Rachel Street, who independently developed a database for monitoring observatory statuses.
+
+In November 2020 the ASTRO-Polis project was created on GitHub.
