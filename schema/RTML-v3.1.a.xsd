@@ -1,0 +1,2653 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+	targetNamespace="http://www.rtml.org/v3.1a" xmlns="http://www.rtml.org/v3.1a" xmlns:stc="http://www.ivoa.net/xml/STC/stc-v1.20.xsd"
+	xmlns:crd="http://www.ivoa.net/xml/STC/STCcoords/v1.20" xmlns:reg="http://www.ivoa.net/xml/STC/STCregion/v1.20">
+
+<!--========================================================================================================================-->
+<!--                                                       Schema Management                                                -->
+<!--========================================================================================================================-->
+
+<!--                                                         DOCUMENTATION                                                  -->
+	<xs:annotation>
+		<xs:documentation>
+			<name>RTML - Remote Telescope Markup Language 3.1a</name>
+			<SEVERE_WARNING> Please leave documentation in Twiki form and don't reformat! </SEVERE_WARNING>
+			<revision version="3.1a">
+				<name>F.V. Hessman</name>
+				<date>2005-MAR-17</date> Substantial revision of 3.0. To make the conversion to software objects more easy, many elements have been
+				returned to attributes (e.g. &lt;Name&gt; to ``name=""'', &lt;Units&gt; to ``units=""'') and the contents of
+				enumerators have been prepared for direct translation into object/class names (e.g. no spaces or slashes). Doesn't look as nice, but
+				only a few humans are supposed to know the difference. The rules are: 1. things which are minor, simple and/or universally standard
+				(like name, units, simple minimum, and maximum) are attributes; 1. things which are complicated or one of a large heterogeneous
+				collection aren't; 1. enumerations use underscore ("_") for spaces and avoid slashes ("/") in order to make the direct conversion into
+				software objects simpler (the names can be taken directly from the contents). </revision>
+			<revision version="3.1a">
+				<name>F.V. Hessman</name>
+				<date>2005-NOV-22</date> Change of the way that the STC schemata are imported (now via individual schema import elements) and links to
+				the true schemata. Because elements with *Type names (e.g. "FilterType") cause problems with stupid Java parsers (JAXB), have changed
+				such to *Types (e.g. "FilterTypes"). </revision>
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--                             IMPORTS                                                              -->
+	<xs:import namespace="http://www.ivoa.net/xml/STC/stc-v1.20.xsd" schemaLocation="http://www.ivoa.net/xml/STC/stc-v1.20.xsd"/>
+	<xs:import namespace="http://www.ivoa.net/xml/STC/STCcoords/v1.20" schemaLocation="http://www.ivoa.net/xml/STC/STCcoords/coords-v1.20.xsd"/>
+	<xs:import namespace="http://www.ivoa.net/xml/STC/STCregion/v1.20" schemaLocation="http://www.ivoa.net/xml/STC/STCregion/region-v1.20.xsd"/>
+
+	<!--                             INCLUDE                                                              -->
+
+	<!--                            REDEFINE                                                              -->
+
+<!--========================================================================================================================-->	
+<!--                                          Model-Building Components                                                     -->
+<!--========================================================================================================================-->
+
+<!--                                                NOTATIONS                                                               -->
+
+<!--                                                SIMPLE TYPES                                                            -->
+	<xs:simpleType name="FilterTypes">
+		<xs:annotation>
+			<xs:documentation> Standard filter names. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none"/>
+			<xs:enumeration value="clear"/>
+			<xs:enumeration value="neutral_density"/>
+			<xs:enumeration value="blue"/>
+			<xs:enumeration value="green"/>
+			<xs:enumeration value="red"/>
+			<xs:enumeration value="U"/>
+			<xs:enumeration value="B"/>
+			<xs:enumeration value="V"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="H"/>
+			<xs:enumeration value="J"/>
+			<xs:enumeration value="K"/>
+			<xs:enumeration value="L"/>
+			<xs:enumeration value="M"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="Johnson_U"/>
+			<xs:enumeration value="Johnson_B"/>
+			<xs:enumeration value="Johnson_V"/>
+			<xs:enumeration value="Johnson_R"/>
+			<xs:enumeration value="Johnson_I"/>
+			<xs:enumeration value="Johnson_J"/>
+			<xs:enumeration value="Johnson_H"/>
+			<xs:enumeration value="Johnson_K"/>
+			<xs:enumeration value="Johnson_L"/>
+			<xs:enumeration value="Johnson_M"/>
+			<xs:enumeration value="Johnson_N"/>
+			<xs:enumeration value="Bessel_U"/>
+			<xs:enumeration value="Bessel_B"/>
+			<xs:enumeration value="Bessel_V"/>
+			<xs:enumeration value="Bessel_R"/>
+			<xs:enumeration value="Bessel_I"/>
+			<xs:enumeration value="Cousins_R"/>
+			<xs:enumeration value="Cousins_I"/>
+			<xs:enumeration value="Sloan_u"/>
+			<xs:enumeration value="Sloan_g"/>
+			<xs:enumeration value="Sloan_r"/>
+			<xs:enumeration value="Sloan_i"/>
+			<xs:enumeration value="Sloan_z"/>
+			<xs:enumeration value="Stromgren_u"/>
+			<xs:enumeration value="Stromgren_b"/>
+			<xs:enumeration value="Stromgren_beta"/>
+			<xs:enumeration value="Stromgren_y"/>
+			<xs:enumeration value="Gunn_g"/>
+			<xs:enumeration value="Gunn_r"/>
+			<xs:enumeration value="Gunn_i"/>
+			<xs:enumeration value="Gunn_z"/>
+			<xs:enumeration value="narrowband"/>
+			<xs:enumeration value="Halpha"/>
+			<xs:enumeration value="Hbeta"/>
+			<xs:enumeration value="forbidden_OI"/>
+			<xs:enumeration value="forbidden_OII"/>
+			<xs:enumeration value="forbidden_OIII"/>
+			<xs:enumeration value="forbidden_NII"/>
+			<xs:enumeration value="forbidden_SII"/>
+			<xs:enumeration value="other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DeviceTypes">
+		<xs:annotation>
+			<xs:documentation> Generic descriptions for a &lt;Device&gt;. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="autoguider"/>
+			<xs:enumeration value="camera"/>
+			<xs:enumeration value="dimm"/>
+			<xs:enumeration value="etalon"/>
+			<xs:enumeration value="filterwheel"/>
+			<xs:enumeration value="filter"/>
+			<xs:enumeration value="grating"/>
+			<xs:enumeration value="grism"/>
+			<xs:enumeration value="half-wave_plate"/>
+			<xs:enumeration value="interferometer"/>
+			<xs:enumeration value="lens"/>
+			<xs:enumeration value="mask"/>
+			<xs:enumeration value="mirror"/>
+			<xs:enumeration value="optics"/>
+			<xs:enumeration value="other"/>
+			<xs:enumeration value="prism"/>
+			<xs:enumeration value="photometer"/>
+			<xs:enumeration value="polarimeter"/>
+			<xs:enumeration value="quarter-wave_plate"/>
+			<xs:enumeration value="shutter"/>
+			<xs:enumeration value="sky_monitor"/>
+			<xs:enumeration value="slit"/>
+			<xs:enumeration value="spectrograph"/>
+			<xs:enumeration value="spectropolarimeter"/>
+			<xs:enumeration value="telescope"/>
+			<xs:enumeration value="web_camera"/>
+			<xs:enumeration value="weather_station"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DeliveryTypes">
+		<xs:annotation>
+			<xs:documentation> The method which should be used to deliver the &lt;ImageData&gt; once it has been taken. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="email"/>
+			<xs:enumeration value="ftp"/>
+			<xs:enumeration value="mail"/>
+			<xs:enumeration value="uri"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoordinateSystemTypes">
+		<xs:annotation>
+			<xs:documentation> Standard celestial coordinate systems: ICRS="International Celestial Reference System"; FK4="mean place (old
+				Bessel/Newcomb system)"; FK5="mean place (IAU 1984)"; FK4-no-e="FK4 without e-terms"; GAPPT="Geocentric Apparent Place (IAU 1984)".
+				See WCS/FITS discussion by Calabretta &amp; Greisen, A&amp;A 395, 1077 (2002). (e.g.
+				http://www.edpsciences.org/articles/aa/full/2002/45/aah3860/node3.html). </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ICRS"/>
+			<xs:enumeration value="FK4"/>
+			<xs:enumeration value="FK4-no-e"/>
+			<xs:enumeration value="FK5"/>
+			<xs:enumeration value="GAPPT"/>
+			<xs:enumeration value="other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SpectralUnitsTypes">
+		<xs:annotation>
+			<xs:documentation> Units appropriate for some spectral property, either in wavelength, frequency, or energy. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="centimeters"/>
+			<xs:enumeration value="ev"/>
+			<xs:enumeration value="gev"/>
+			<xs:enumeration value="gigahertz"/>
+			<xs:enumeration value="hertz"/>
+			<xs:enumeration value="kev"/>
+			<xs:enumeration value="kilohertz"/>
+			<xs:enumeration value="megahertz"/>
+			<xs:enumeration value="meters"/>
+			<xs:enumeration value="mev"/>
+			<xs:enumeration value="micrometers"/>
+			<xs:enumeration value="millimeters"/>
+			<xs:enumeration value="nanometers"/>
+			<xs:enumeration value="tev"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SpectralRegionTypes">
+		<xs:annotation>
+			<xs:documentation> Element type for describing in which general spectral region a particular telescope/instrument works.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="radio"/>
+			<xs:enumeration value="millimeter"/>
+			<xs:enumeration value="infrared"/>
+			<xs:enumeration value="optical"/>
+			<xs:enumeration value="ultraviolet"/>
+			<xs:enumeration value="x-ray"/>
+			<xs:enumeration value="gamma-ray"/>
+			<xs:enumeration value="gravitational_wave"/>
+			<xs:enumeration value="cosmic ray"/>
+			<xs:enumeration value="neutrino"/>
+			<xs:enumeration value="other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatusTypes">
+		<xs:annotation>
+			<xs:documentation> The status of an &lt;Observation&gt; or &lt;Schedule&gt; etc.. Elements which are "inactive" are those
+				which, for whatever reason, should not be performed or considered (e.g. because they are not fully defined or are waiting to be
+				triggered). "Active" elements are those which should be performed or considered. "Error" means that the element has some problem.
+				"Done" elements have been performed/processed. Note that a &lt;Schedule&gt; can contain a mixture of inactive, active, and
+				done &lt;Observations&gt;. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="inactive"/>
+			<xs:enumeration value="active"/>
+			<xs:enumeration value="done"/>
+			<xs:enumeration value="error"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EmptyElementTypes">
+		<xs:annotation>
+			<xs:documentation> Handy type for empty contents. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.rtml.org" xmlns:stc="http://www.ivoa.net/xml/STC/stc-v1.20.xsd"
+		name="TargetTypes">
+		<xs:annotation>
+			<xs:documentation> Rough classification of a target for database query purposes ("Show me all the data from Seyfert galaxies in the
+				constellation Cygnus"). The strange syntax is for those who want to create Java Strings/Objects. This element will soon be modified to
+				concur with [[http://monet.uni-sw.gwdg.de/twiki/bin/view/VOEvent/UnifiedContentDescriptors][VOConcept]] or future UCD's.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="calibration_:_astrometric_standard"/>
+			<xs:enumeration value="calibration_:_dome-flat"/>
+			<xs:enumeration value="calibration_:_guide_star"/>
+			<xs:enumeration value="calibration_:_photometric_standard"/>
+			<xs:enumeration value="calibration_:_polarimetric_standard"/>
+			<xs:enumeration value="calibration_:_radial-velocity_standard"/>
+			<xs:enumeration value="calibration_:_sky-flat"/>
+			<xs:enumeration value="calibration_:_spectropolarimetric_standard"/>
+			<xs:enumeration value="calibration_:_spectroscopic_standard"/>
+			<xs:enumeration value="galaxy_:_active_galactic_nucleus"/>
+			<xs:enumeration value="galaxy_:_black_hole"/>
+			<xs:enumeration value="galaxy_:_blazar"/>
+			<xs:enumeration value="galaxy_:_dwarf"/>
+			<xs:enumeration value="galaxy_:_elliptical"/>
+			<xs:enumeration value="galaxy_:_galaxy"/>
+			<xs:enumeration value="galaxy_:_galaxy_cluster"/>
+			<xs:enumeration value="galaxy_:_gravitational_lens"/>
+			<xs:enumeration value="galaxy_:_interacting"/>
+			<xs:enumeration value="galaxy_:_irregular"/>
+			<xs:enumeration value="galaxy_:_seyfert"/>
+			<xs:enumeration value="galaxy_:_spiral"/>
+			<xs:enumeration value="galaxy_:_starburst"/>
+			<xs:enumeration value="galaxy_:_supernova"/>
+			<xs:enumeration value="galaxy_:_quasar"/>
+			<xs:enumeration value="misc_:_constellation"/>
+			<xs:enumeration value="misc_:_optical_flash"/>
+			<xs:enumeration value="misc_:_other"/>
+			<xs:enumeration value="misc_:_sky"/>
+			<xs:enumeration value="misc_:_star_field"/>
+			<xs:enumeration value="nebula_:_bipolar"/>
+			<xs:enumeration value="nebula_:_dark_cloud"/>
+			<xs:enumeration value="nebula_:_gaseous"/>
+			<xs:enumeration value="nebula_:_outflow/jet"/>
+			<xs:enumeration value="nebula_:_reflection"/>
+			<xs:enumeration value="nebula_:_supernova remnant"/>
+			<xs:enumeration value="solar_system_:_asteroid"/>
+			<xs:enumeration value="solar_system_:_comet"/>
+			<xs:enumeration value="solar_system_:_earth"/>
+			<xs:enumeration value="solar_system_:_kuiper_belt_object"/>
+			<xs:enumeration value="solar_system_:_jupiter"/>
+			<xs:enumeration value="solar_system_:_mars"/>
+			<xs:enumeration value="solar_system_:_mercury"/>
+			<xs:enumeration value="solar_system_:_moon"/>
+			<xs:enumeration value="solar_system_:_neptune"/>
+			<xs:enumeration value="solar_system_:_planetary_moon"/>
+			<xs:enumeration value="solar_system_:_planetary_ring"/>
+			<xs:enumeration value="solar_system_:_pluto"/>
+			<xs:enumeration value="solar_system_:_saturn"/>
+			<xs:enumeration value="solar_system_:_uranus"/>
+			<xs:enumeration value="solar_system_:_venus"/>
+			<xs:enumeration value="star_:_binary_or_multiple"/>
+			<xs:enumeration value="star_:_black_hole"/>
+			<xs:enumeration value="star_:_brown_dwarf"/>
+			<xs:enumeration value="star_:_cataclysmic_variable"/>
+			<xs:enumeration value="star_:_classical_nova"/>
+			<xs:enumeration value="star_:_cepheid_variable"/>
+			<xs:enumeration value="star_:_eclipsing_binary"/>
+			<xs:enumeration value="star_:_gamma-ray_burst"/>
+			<xs:enumeration value="star_:_globular_cluster"/>
+			<xs:enumeration value="star_:_irregular_variable"/>
+			<xs:enumeration value="star_:_microlensing_event"/>
+			<xs:enumeration value="star_:_nearby"/>
+			<xs:enumeration value="star_:_neutron"/>
+			<xs:enumeration value="star_:_open_cluster"/>
+			<xs:enumeration value="star_:_pre-main-sequence"/>
+			<xs:enumeration value="star_:_proper-motion"/>
+			<xs:enumeration value="star_:_protostar"/>
+			<xs:enumeration value="star_:_pulsar"/>
+			<xs:enumeration value="star_:_star"/>
+			<xs:enumeration value="star_:_star_cluster"/>
+			<xs:enumeration value="star_:_supernova"/>
+			<xs:enumeration value="star_:_variable"/>
+			<xs:enumeration value="star_:_white_dwarf"/>
+			<xs:enumeration value="star_:_wolf_rayet"/>
+			<xs:enumeration value="sun_:_chromosphere"/>
+			<xs:enumeration value="sun_:_corona"/>
+			<xs:enumeration value="sun_:_sun"/>
+			<xs:enumeration value="sun_:_sunspot"/>
+			<xs:enumeration value="unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FluxUnitsTypes">
+		<xs:annotation>
+			<xs:documentation> Allowed flux units to permit automatic conversion of target brightness. If the first form is used for a filtered image
+				- "watts/square-meter" - the assumption is that an integration over the filter has already been made. Handy conversions between
+				different units are: |From |To |Multiply by | |Watt |ergs/second |1.e+7| |Watts/square-meter |ergs/square-centimeter/second |1.e+3 |
+				|Watts/square-meter/hertz| ergs/square-centimeter/second/hertz |1.e+3 | |Janskys |Watts/square-meter/hertz |1.e-26 | |Janskys
+				|ergs/square-centimeter/second/hertz |1.e-23| </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="adu"/>
+			<xs:enumeration value="adu_per_pixel"/>
+			<xs:enumeration value="watts_per_square-meter"/>
+			<xs:enumeration value="watts_per_square-meter_per_hertz"/>
+			<xs:enumeration value="watts_per_square-meter_per_meter"/>
+			<xs:enumeration value="watts_per_square-meter_per_square-arcsecond"/>
+			<xs:enumeration value="watts_per_square-meter_per_per_hertz_per_square-arcsecond"/>
+			<xs:enumeration value="watts_per_square-meter_per_meter_per_square-arcsecond"/>
+			<xs:enumeration value="other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UniqueNamesSimpleType">
+		<xs:annotation>
+			<xs:documentation> RTML UniqueNames are used to provide unique id's for observing requests and specially id-ed RTML elements associated
+				with the server (e.g. standardized &lt;Setup&gt;'s). UniqueName's are globally unique identifiers with values given by RTML
+				servers, consisting of 1. the prefix "rtml://" identifying the name as an RTML uid. 1. a server identifier (e.g. "MONET", "DC3",
+				"HOU", "SALT", "ROTSE") encased in a reverse network notation (e.g. "DE.Uni-Goettingen.MONET") 1. a unique document name conforming to
+				the XML NMTOKEN definition, i.e. a set of characters without spaces or commas, but including the possibility of using slashes, e.g. as
+				in the structure of a filesystem (e.g. "directory/subdirectory/subsubdirectory"), and 1. optional reference to a document XML id
+				preseded by a pound character ("#"). UniqueName's can be defined by the submission of an RTML document containing a question mark as
+				server and/or document name ("rtml://?" or "rtml://myServerName/?") The server is expected to create a new UniqueName to take the
+				place of the query name. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:pattern value="rtml://.+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CalibrationTypes">
+		<xs:annotation>
+			<xs:documentation> Used to identify the purpose of a &lt;CalibrationObservation&gt;, e.g. for shutter control. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="alignment"/>
+			<xs:enumeration value="bias"/>
+			<xs:enumeration value="centering"/>
+			<xs:enumeration value="dark-current"/>
+			<xs:enumeration value="extra-focal"/>
+			<xs:enumeration value="flatfield"/>
+			<xs:enumeration value="flux"/>
+			<xs:enumeration value="focus"/>
+			<xs:enumeration value="frequency"/>
+			<xs:enumeration value="fringing"/>
+			<xs:enumeration value="intra-focal"/>
+			<xs:enumeration value="other"/>
+			<xs:enumeration value="position"/>
+			<xs:enumeration value="timing"/>
+			<xs:enumeration value="tracking"/>
+			<xs:enumeration value="wavelength"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ModeSimpleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="abort"/>
+			<xs:enumeration value="acknowledged"/>
+			<xs:enumeration value="complete"/>
+			<xs:enumeration value="confirm"/>
+			<xs:enumeration value="fail"/>
+			<xs:enumeration value="incomplete"/>
+			<xs:enumeration value="inquiry"/>
+			<xs:enumeration value="offer"/>
+			<xs:enumeration value="reject"/>
+			<xs:enumeration value="report"/>
+			<xs:enumeration value="request"/>
+			<xs:enumeration value="resource"/>
+			<xs:enumeration value="update"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NonNegativeDouble">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PositiveDouble">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!--                          COMPLEX TYPES                                                           -->
+	<!--                          ROOT ELEMENT TYPE                                                       -->
+	<!--                          VALUE WITH UNITS COMPLEX TYPES                                                      -->
+	<xs:complexType name="DoubleValueMicrometersUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="micrometers"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueADUUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="adu"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueElectronsPerSecondUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="electrons_per_second"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueElectronsPerADUUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="electrons_per_adu"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueDegreesUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="degrees"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueElectronsUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="electrons"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueArcsecondsUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="arcseconds"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueArcsecondsPerSecondUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="arcseconds/second"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleValueSecondsPerSecondUnitsComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="seconds/second"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!--                          COORDINATES RELATED COMPLEX TYPES                                                      -->
+	<xs:complexType name="CoordinatesComplexType">
+		<xs:annotation>
+			<xs:documentation> Container for &lt;Target&gt; or &lt;Telescope&gt; coordinates expressed either in equatorial R.A. and
+				Declination, altitude and azimuth (in degrees measured westward from S: W is 90 degrees), as some standard dome screen position (e.g.
+				that used for the production of dome flats), or some standard park position. For equatorial coordinates, the assumed epoch is current,
+				equinox is 2000, and system is ICRS. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:sequence>
+				<xs:element name="RightAscension" type="RightAscensionComplexType"/>
+				<xs:element name="Declination" type="DeclinationComplexType"/>
+				<xs:element name="Epoch" type="xs:double" minOccurs="0"/>
+				<xs:element name="Equinox" type="xs:double" minOccurs="0"/>
+				<xs:element name="System" type="CoordinateSystemTypes" minOccurs="0"/>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="Altitude" type="AltitudeComplexType"/>
+				<xs:element name="Azimuth" type="AzimuthComplexType"/>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="DomeScreen" type="EmptyElementTypes"/>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="ParkPosition" type="EmptyElementTypes"/>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="ServicePosition" type="EmptyElementTypes"/>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="Zenith" type="EmptyElementTypes"/>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="VOObservationLocation" type="VOObservationLocationComplexType"/>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="AltitudeComplexType">
+		<xs:annotation>
+			<xs:documentation> Angle above the horizon (for &lt;Target&gt; or for &lt;Telescope&gt;) in degrees. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="degrees"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="AzimuthComplexType">
+		<xs:annotation>
+			<xs:documentation> Angle in degrees measured westward from S (W is 90 degrees); this is a modification from RTML 3.0, which measured it
+				eastward from N (W is 270 degrees).. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="degrees"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DeclinationComplexType">
+		<xs:annotation>
+			<xs:documentation> Container for the equatorial celestial coordinate of a Target, either in 1. degrees, arcminutes and (decimal)
+				arcseconds, or 1. decimal degrees or 1. decimal arcsecond relative offsets from a standard position defined by a parent
+				&lt;Target&gt; (e.g. the Moon). An optional offset also can be given to the standard forms. If an offset also is given a
+				count, then an equal spacing of the offsets at equal time intervals is implied, modified slightly by the first attribute which says
+				that the first offset is a muliple of the normal offset distance (to indicate where the sequence started). In addition, an optional
+				ProperMotion element may be provided. Note: the main &lt;Degrees&gt; element has intentionally been left as a string in order
+				to force the use of a sign which must be carefully parsed to insure that negativ declinations &gt; -1 degree are correctly parsed.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="Degrees">
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:pattern value="(\+|\-)[0-9]+"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Arcminutes" type="xs:integer"/>
+					<xs:element name="Arcseconds" type="xs:double"/>
+				</xs:sequence>
+				<xs:element name="Value" type="DoubleValueDegreesUnitsComplexType"/>
+				<xs:element name="TargetOffset" type="DoubleValueArcsecondsUnitsComplexType"/>
+			</xs:choice>
+			<xs:element name="Offset" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" use="required" fixed="arcseconds"/>
+							<xs:attribute name="count" type="xs:positiveInteger"/>
+							<xs:attribute name="first" type="xs:positiveInteger"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Error" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" use="required" fixed="arcseconds"/>
+							<xs:attribute name="sigmas" type="xs:double"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProperMotion" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" use="required" fixed="arcseconds/year"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="RightAscensionComplexType">
+		<xs:annotation>
+			<xs:documentation> Equatorial Right Ascension of &lt;Target&gt;, measured either in 1. hours, minutes, and seconds, 1. decimal
+				hours, or 1. an offset in arcseconds (!!!) relative to the current position or to a standard target position (e.g. the Moon). Optional
+				additional offsets (in arcseconds!!!) and proper motions and errors may be included. If the offset is given a "count", then a sequence
+				of offsets spaced equally in time is implied. A "first" offset attribute implies that the first offset should be a multiple of the
+				normal offset (used to distinquish where the sequence started, e.g. in a focus series). </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="Hours" type="xs:positiveInteger"/>
+					<xs:element name="Minutes" type="xs:positiveInteger"/>
+					<xs:element name="Seconds" type="xs:double"/>
+				</xs:sequence>
+				<xs:element name="Value">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:double">
+								<xs:attribute name="units" type="xs:string" fixed="hours"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TargetOffset" type="DoubleValueArcsecondsUnitsComplexType"/>
+			</xs:choice>
+			<xs:element name="Offset" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" fixed="arcseconds"/>
+							<xs:attribute name="count" type="xs:positiveInteger"/>
+							<xs:attribute name="first" type="xs:positiveInteger"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Error" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" fixed="seconds"/>
+							<xs:attribute name="sigmas" type="xs:double"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProperMotion" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" fixed="seconds_per_year"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="VOObservationLocationComplexType">
+		<xs:annotation>
+			<xs:documentation> </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="stc:observationLocationType">
+				<xs:attribute name="ref" type="xs:IDREF"/>
+				<xs:attribute name="uref" type="UniqueNamesSimpleType"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!--                          MISC COMPLEX TYPES                                                      -->
+	<xs:complexType name="CostComplexType">
+		<xs:annotation>
+			<xs:documentation> The contents are the "cost" of performing a certain task, expressed as a decimal number and the associated units as a
+				string. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DateTimeComplexType">
+		<xs:annotation>
+			<xs:documentation> Astronomical dateTime, including the system ("UT", "HJD",...) and accuracy. Default is UT. </xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="value" type="xs:dateTime"/>
+		<xs:attribute name="system">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="UT"/>
+					<xs:enumeration value="heliocentric"/>
+					<xs:enumeration value="barycentric"/>
+					<xs:enumeration value="civil"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="error" type="xs:duration"/>
+	</xs:complexType>
+
+	<xs:complexType name="DescriptionComplexType" mixed="true">
+		<xs:annotation>
+			<xs:documentation> Arbitrary information about a parent element. Can include arbitrary XML (and hence RTML) but the content is not checked
+				for syntax using the RTML schema (this is a handy central place for this definition in case it needs to be changed).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MixedContentComplexType" mixed="true">
+		<xs:annotation>
+			<xs:documentation> Handy type for mixed string plus XML content which should be checked for formal basic XML syntax (e.g. open elements
+				have some closure syntax) but otherwise ignored. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="XYPairComplexType">
+		<xs:annotation>
+			<xs:documentation> Generic pair of (x,y) coordinates with some units. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="X">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Y">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="ProbabilityComplextType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="percent"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<!--                          DEVICES RELATED COMPLEX TYPES                        -->
+	<xs:complexType name="DeviceComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of a general purpose device. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Device" type="DeviceComplexType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Setup" type="SetupComplexType"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType"/>
+			<xs:element name="SpectralRegion" type="SpectralRegionTypes"/>
+			<xs:element name="WeatherReport" type="WeatherReportOrConstraintComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="type" type="DeviceTypes"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="SpectralEfficiencyComplexType">
+		<xs:annotation>
+			<xs:documentation> Transmission or reflectance as a function of wavelength or frequency (units given in attribute). </xs:documentation>
+		</xs:annotation>
+
+		<xs:all>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+			<xs:element name="Data" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> Very simple set of (wavelength,efficiency) pairs, with efficiency as decimal numbers between 0 and 1. Yes, this
+						should be changed to something more elegant! </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="units" type="xs:string" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="BiasComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of &lt;Uri&gt; indicates where the correction image or other information can be obtained.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Base64Data" type="xs:base64Binary"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Uri" type="xs:anyURI"/>
+			<xs:element name="Value" type="DoubleValueADUUnitsComplexType"/>
+
+
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="DetectorComplexType">
+		<xs:annotation>
+			<xs:documentation> A full description of the properties of a detector composed of 1-D or 2-D pixel elements, including things like
+				&lt;Binning&gt; and &lt;Windowing&gt;, described by XYPair elements. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Bias" type="BiasComplexType" minOccurs="0"/>
+			<xs:element name="Binning" type="XYPairComplexType" minOccurs="0"/>
+			<xs:element name="Capacity" type="DoubleValueADUUnitsComplexType" minOccurs="0"/>
+			<xs:element name="ColumnPixelSize" type="DoubleValueMicrometersUnitsComplexType" minOccurs="0"/>
+			<xs:element name="DarkCurrent" type="DarkCurrentComplexType" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="FlatField" type="FlatFieldComplexType" minOccurs="0"/>
+			<xs:element name="Gain" type="GainComplexType" minOccurs="0"/>
+			<xs:element name="NumColumns" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="NumRows" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="PixelRadius" type="DoubleValueMicrometersUnitsComplexType" minOccurs="0"/>
+			<xs:element name="PixelSize" type="DoubleValueMicrometersUnitsComplexType" minOccurs="0"/>
+			<xs:element name="PositionAngle" type="PositionAngleComplextType" minOccurs="0"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType" minOccurs="0"/>
+			<xs:element name="SpectralRegion" type="SpectralRegionTypes" minOccurs="0"/>
+			<xs:element name="ReadoutNoise" type="ReadoutNoiseComplexType" minOccurs="0"/>
+			<xs:element name="RowPixelSize" type="DoubleValueMicrometersUnitsComplexType" minOccurs="0"/>
+			<xs:element name="Windowing" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="Window">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="LowerLeft" type="XYPairComplexType"/>
+									<xs:element name="UpperRight" type="XYPairComplexType"/>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="DarkCurrentComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of &lt;Uri&gt; indicates where the correction info (e.g. image of background rate) can be obtained.
+				The dark current rate can also be expressed as a number ("&lt;Value&gt;") with units "electrons_per_second.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Base64Data" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+			<xs:element name="Value" type="DoubleValueElectronsPerSecondUnitsComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="FlatFieldComplexType">
+		<xs:annotation>
+			<xs:documentation> The information about a flatfield/calibration image (see &lt;FlatFieldCorrection&gt; elements). In a report,
+				the content of &lt;Uri&gt; indicates where the flatfield image (or info about it) can be obtained. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Base64Data" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="GainComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of &lt;Uri&gt; indicates where the gain info (e.g. image or description) can be obtained. The gain
+				can also be expressed as a number ("&lt;Value&gt;") and its units (fixed as "electrons_per_adu"). </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="DoubleValueElectronsPerADUUnitsComplexType"/>
+			<xs:element name="Base64Data" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="PositionAngleComplextType">
+		<xs:annotation>
+			<xs:documentation> Astronomical position angle starting at N and increasing to the E. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="degrees"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="ReadoutNoiseComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of &lt;Uri&gt; indicates where the info (e.g. image of RON) can be obtained. The dark current rate
+				can also be expressed as a number ("&lt;Value&gt;") and its units (fixed as being in electrons: see &lt;Gain&gt;).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Value" type="DoubleValueElectronsUnitsComplexType"/>
+			<xs:element name="Base64Data" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+
+	<!--                          DEVICE - CAMERA RELATED COMPLEX TYPES                         -->
+	<xs:complexType name="CameraComplexType">
+		<xs:annotation>
+			<xs:documentation> A generic Device of type="camera" with a filterwheel and a detector. This is one of the two generic
+				&lt;Telescope&gt; instruments in RTML 3+ (the other is &lt;Spectrograph&gt;). The &lt;PlateScale&gt; can be
+				given if the camera has optics which changes that of the telescope and the latter is given independent of the camera.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Detector" type="DetectorComplexType"/>
+			<xs:element name="FilterWheel" type="FilterWheelComplexType"/>
+			<xs:element name="PlateScale" type="PlateScaleComplexType"/>
+			<xs:element name="Setup" type="SetupComplexType"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType"/>
+			<xs:element name="SpectralRegion" type="SpectralRegionTypes"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="FilterWheelComplexType">
+		<xs:annotation>
+			<xs:documentation> Container for a set of &lt;Filter&gt;'s. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Filter" type="FilterComplexType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="PlateScaleComplexType">
+		<xs:annotation>
+			<xs:documentation> Platescale of a &lt;Telescope&gt; in arcsecs/mm. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" fixed="arcseconds_per_millimeter"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="FilterComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of a filter, expressed either in terms of its standard name or in terms of its properties: center position
+				in wavelength (meters) or frequency (Hz), width, maximum throughput, etc. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Center">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="SpectralUnitsTypes" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FWHM">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="SpectralUnitsTypes" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PeakEfficiency" type="xs:double"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType"/>
+			<xs:element name="SpectralRegion" type="SpectralRegionTypes"/>
+			<xs:element name="Uri" type="xs:anyURI"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="type" type="FilterTypes"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          DEVICE - SPECTOGRAPH RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="SpectrographComplexType">
+		<xs:annotation>
+			<xs:documentation> Generic spectrograph. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Detector" type="DetectorComplexType"/>
+			<xs:element name="Device" type="DeviceComplexType"/>
+			<xs:element name="Grating" type="GratingComplexType"/>
+			<xs:element name="FilterWheel" type="FilterWheelComplexType"/>
+			<xs:element name="PositionAngle" type="PositionAngleComplextType"/>
+			<xs:element name="Setup" type="SetupComplexType"/>
+			<xs:element name="Slit" type="SlitComplexType"/>
+			<xs:element name="SlitMask" type="SlitMaskComplexType"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType"/>
+			<xs:element name="SpectralRegion" type="SpectralRegionTypes"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="SlitComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of a spectrograph slit. By using a set of &lt;Slit&gt;'s, each with different
+				&lt;XYPosition&gt;'s (detector coordinates) or &lt;Coordinates&gt; (equatorial coordinates) and
+				&lt;PositionAngle&gt;'s, even complicated slit masks or MOS units can be described. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element name="XYPosition" type="XYPairComplexType"/>
+				<xs:element name="Coordinates" type="CoordinatesComplexType"/>
+			</xs:choice>
+			<xs:element name="PositionAngle" type="PositionAngleComplextType" minOccurs="0"/>
+			<xs:element name="WidthLength" type="XYPairComplexType"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="SlitMaskComplexType">
+		<xs:annotation>
+			<xs:documentation> Container for a set of &lt;Slits&gt;'s. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Slit" type="SlitComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="GratingComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of a spectrograph grating. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="BlazeAngle" type="DoubleValueDegreesUnitsComplexType" minOccurs="0"/>
+			<xs:element name="Blaze" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="SpectralUnitsTypes" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LinearDispersion" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Lines" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="Order" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          DEVICE - TELESCOPE RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="TelescopeComplexType">
+		<xs:annotation>
+			<xs:documentation> Information about a telescope and its associated instrumentation (either one of the generic instruments,
+				&lt;Camera&gt; or &lt;Spectrograph&gt;, or some other &lt;Device&gt;). If no SpectralRegion element is given,
+				it is assumed to be an optical telescope. The two elements &lt;Coordinates&gt; (also used in &lt;Target&gt;) and
+				&lt; TrackRate&gt; can be used to communicate the present and extrapolated position of the telescope (e.g. in a frequently
+				updated RTML dump). If the telescope is expressed as a hierarchy of &lt;Telescope&gt;s, then the assumption is that the
+				sub-telescopes all move together, either as separate units (e.g. VLA, TAOS), or as multiple telescopes on a single mount (e.g. ROTSE
+				I, RAPTOR P). </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Aperture" type="ApertureComplexType"/>
+			<xs:element name="Camera" type="CameraComplexType"/>
+			<xs:element name="Coordinates" type="CoordinatesComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Device" type="DeviceComplexType"/>
+			<xs:element name="FocalLength" type="FocalLengthComplexType"/>
+			<xs:element name="FocalRatio">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="f/\d+\.?\d*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Location" type="LocationComplexType"/>
+			<xs:element name="Mirrors" type="MirrorsComplexType"/>
+			<xs:element name="PlateScale" type="PlateScaleComplexType"/>
+			<xs:element name="Setup" type="SetupComplexType"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType"/>
+			<xs:element name="SpectralRegion" type="SpectralRegionTypes"/>
+			<xs:element name="Spectrograph" type="SpectrographComplexType"/>
+			<xs:element name="Telescope" type="TelescopeComplexType"/>
+			<xs:element name="TrackRate" type="TrackRateComplexType"/>
+			<xs:element name="WeatherReport" type="WeatherReportOrConstraintComplexType"/>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ApertureComplexType">
+		<xs:annotation>
+			<xs:documentation> Aperture of telescope in meters. If the attribute "type" is equal to "effective" rather than the default "geometric"),
+				then the aperture can be used to compute the true collecting area (e.g. allowance for central obscuration due to secondary mirror).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="type" default="geometric">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="geometric"/>
+							<xs:enumeration value="effective"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="meters"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="FocalLengthComplexType">
+		<xs:annotation>
+			<xs:documentation> Focal length of a &lt;Telescope&gt; (in meters). </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" type="xs:string" use="required" fixed="meters"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="LocationComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of the location of a &lt;Telescope&gt;. Longitude is given east of Greenwich (IAU convention).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:choice minOccurs="2" maxOccurs="4">
+				<xs:element name="EastLongitude" type="DoubleValueDegreesUnitsComplexType"/>
+				<xs:element name="Latitude" type="DoubleValueDegreesUnitsComplexType"/>
+				<xs:element name="Height" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:double">
+								<xs:attribute name="units" type="xs:string" fixed="meters"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TimeZone" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			</xs:choice>
+			<xs:sequence>
+				<xs:element name="VOObservatoryLocation" type="VOObservatoryLocationComplexType"/>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="MirrorsComplexType">
+
+		<xs:annotation>
+			<xs:documentation> Number and coating of mirrors in some optical train. Used instead of &lt;SpectralEfficiency&gt; if actual
+				reflectance not known or measured. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Number" type="xs:positiveInteger"/>
+			<xs:element name="Coating">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="aluminum"/>
+						<xs:enumeration value="enhanced_aluminum"/>
+						<xs:enumeration value="enhanced_silver"/>
+						<xs:enumeration value="gold"/>
+						<xs:enumeration value="mercury"/>
+						<xs:enumeration value="silver"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="OrbitalElementsComplexType">
+		<xs:annotation>
+			<xs:documentation> List of orbital elements in the &lt;a href="http://cfa-www.harvard.edu/iau/mpc.html"&gt;IAU
+				MPC&lt;/a&gt; "one-line" short form. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>
+
+
+	<xs:complexType name="VOObservatoryLocationComplexType">
+		<xs:annotation>
+			<xs:documentation> </xs:documentation>
+		</xs:annotation>
+
+		<xs:complexContent>
+			<xs:extension base="stc:observatoryLocationType">
+				<xs:attribute name="ref" type="xs:IDREF"/>
+				<xs:attribute name="uref" type="UniqueNamesSimpleType"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="TrackRateComplexType">
+		<xs:annotation>
+			<xs:documentation> Track rate of the telescope for a given &lt;Target&gt;, defined either by 1. a set of solar system orbital
+				elements (e.g. for asteroids), 1. implicit values for sun, moon, and planets, 1. siderial offset track rates in R.A. (in sec/sec) and
+				Declination (in arcsec/sec), or 1. track rates in azimuth and altitude (in degrees/sec). </xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="OrbitalElements" type="OrbitalElementsComplexType" minOccurs="0"/>
+			<xs:sequence>
+				<xs:element name="DeclinationOffsetRate" type="DoubleValueArcsecondsPerSecondUnitsComplexType" minOccurs="0"/>
+				<xs:element name="RightAscensionOffsetRate" type="DoubleValueSecondsPerSecondUnitsComplexType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="AltitudeRate" type="DoubleValueArcsecondsPerSecondUnitsComplexType" minOccurs="0"/>
+				<xs:element name="AzimuthRate" type="DoubleValueArcsecondsPerSecondUnitsComplexType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="stationary"/>
+					<xs:enumeration value="siderial"/>
+					<xs:enumeration value="lunar"/>
+					<xs:enumeration value="solar"/>
+					<xs:enumeration value="mercury"/>
+					<xs:enumeration value="venus"/>
+					<xs:enumeration value="mars"/>
+					<xs:enumeration value="jupiter"/>
+					<xs:enumeration value="saturn"/>
+					<xs:enumeration value="uranus"/>
+					<xs:enumeration value="neptune"/>
+					<xs:enumeration value="pluto"/>
+					<xs:enumeration value="other"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+	<!--                          CALIBRATION RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="CalibrationComplexType">
+		<xs:annotation>
+			<xs:documentation> Contains a list of possible standard reduction steps, each indicating whether the correction should be applied
+				(correction=) and, in a report, information about the correction (URL and/or values for the individual calibrations). If present, the
+				&lt;Count&gt; element suggests how many calibration exposures is needed for a final correction image. The option
+				&lt;Pipeline&gt; elements can specify in detail what calibration is to be performed. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="AstrometricSolution" type="CalibrationAstrometricSolutionComplexType"/>
+			<xs:element name="BadPixelCorrection" type="CalibrationBadPixelCorrectionComplexType"/>
+			<xs:element name="BiasCorrection" type="CalibrationBiasCorrectionComplexType"/>
+			<xs:element name="CosmicRayCorrection" type="CalibrationCosmicRayCorrectionComplexType"/>
+			<xs:element name="DarkCurrentCorrection" type="CalibrationDarkCurrentCorrectionComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="FlatFieldCorrection" type="CalibrationFlatFieldCorrectionComplexType"/>
+			<xs:element name="FringingCorrection" type="CalibrationFringingCorrectionComplexType"/>
+			<xs:element name="Pipeline" type="PipelineComplexType"/>
+			<xs:element name="SourceIdentification" type="CalibrationSourceIdentificationComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationAstrometricSolutionComplexType">
+		<xs:all>
+			<xs:element name="Pipeline" type="PipelineComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationBadPixelCorrectionComplexType">
+		<xs:all>
+			<xs:element name="BadPixels" type="BadPixelsComplexType" minOccurs="0"/>
+			<xs:element name="Pipeline" type="PipelineComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationBiasCorrectionComplexType">
+		<xs:all>
+			<xs:element name="Count" type="xs:positiveInteger" default="1" minOccurs="0"/>
+			<xs:element name="Bias" type="BiasComplexType" minOccurs="0"/>
+			<xs:element name="Pipeline" type="PipelineComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationCosmicRayCorrectionComplexType">
+		<xs:all>
+			<xs:element name="CosmicRays" type="CosmicRaysComplexType" minOccurs="0"/>
+			<xs:element name="Pipeline" type="PipelineComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationDarkCurrentCorrectionComplexType">
+		<xs:all>
+			<xs:element name="Count" type="xs:positiveInteger" default="1" minOccurs="0"/>
+			<xs:element name="DarkCurrent" type="DarkCurrentComplexType" minOccurs="0"/>
+			<xs:element name="Pipeline" type="PipelineComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationFlatFieldCorrectionComplexType">
+		<xs:all>
+			<xs:element name="Count" type="xs:positiveInteger" default="1" minOccurs="0"/>
+			<xs:element name="FlatField" type="FlatFieldComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationFringingCorrectionComplexType">
+		<xs:all>
+			<xs:element name="Count" type="xs:positiveInteger" default="1" minOccurs="0"/>
+			<xs:element name="Fringing" type="FringingComplexType" minOccurs="0"/>
+			<xs:element name="Pipeline" type="PipelineComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="CalibrationSourceIdentificationComplexType">
+		<xs:attribute name="format">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="other"/>
+					<xs:enumeration value="sextractor"/>
+					<xs:enumeration value="text"/>
+					<xs:enumeration value="VOTable"/>
+					<xs:enumeration value="xml"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="correction" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<xs:complexType name="PipelineComplexType">
+		<xs:annotation>
+			<xs:documentation> Similar to the &lt;script&gt; element known from web-browsers (e.g. for JavaScript), the
+				&lt;Pipeline&gt; element is, e.g., a suggestion on how the data should be reduced if the generic reduction provided by
+				Calibration isn't adequate. The requested use of the common image-processing packages "iraf" (NOAO), "Midas"(ESO), "IDL" (commercial),
+				or some other scripting package is supported, but servers can choose to ignore this request. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="InputImage">
+				<xs:complexType>
+					<xs:attributeGroup ref="RTMLAttributes"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OutputImage">
+				<xs:complexType>
+					<xs:attributeGroup ref="RTMLAttributes"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="language">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="applescript"/>
+					<xs:enumeration value="idl"/>
+					<xs:enumeration value="iraf"/>
+					<xs:enumeration value="midas"/>
+					<xs:enumeration value="other"/>
+					<xs:enumeration value="perl"/>
+					<xs:enumeration value="posix"/>
+					<xs:enumeration value="python"/>
+					<xs:enumeration value="ruby"/>
+					<xs:enumeration value="tcl"/>
+					<xs:enumeration value="vb"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="BadPixelsComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of &lt;Uri&gt; indicates where additional information about the effect (mask or list of bad pixels)
+				can be obtained. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Base64Data" type="xs:base64Binary"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<!-- changed in order to preserve consistency -->
+			<xs:element name="Uri" type="xs:anyURI"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="CosmicRaysComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of &lt;Uri&gt; indicates where information about the correction can be obtained.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Base64Data" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="FringingComplexType">
+		<xs:annotation>
+			<xs:documentation> In a report, the content of &lt;Uri&gt; indicates where the fringe-correction calibration image can be
+				obtained. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          HISTORY RELATED COMPLEX TYPES                                           -->
+	<xs:complexType name="HistoryComplexType">
+		<xs:annotation>
+			<xs:documentation> The &lt;History&gt; element is the place which records additions, corrections, and changes within an RTML
+				document. Each addition consists of an &lt;Entry&gt;, which in turn consists of information on who is making the entry
+				(&lt;Agent&gt;), when the entry was made (timeStamp), and either a text description of the entry
+				(&lt;Description&gt;), a formal &lt;Error&gt; element which should be linked to the offending element, or a
+				&lt;Version&gt; element which can be used for version control. In earlier versions, each RTML element had its own
+				&lt;History&gt; - now there's just a global one. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Entry" type="EntryComplexType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="EntryComplexType">
+		<xs:annotation>
+			<xs:documentation> Container for a &lt;History&gt; entry, consisting of at least an &lt;Agent&gt; and a timeStamp
+				attribute. Optional are &lt;Description&gt;s, &lt;Error&gt;s and &lt;Version&gt;s. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Agent" type="AgentComplexType"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Description" type="DescriptionComplexType"/>
+				<xs:element name="Error" type="xs:string"/>
+				<xs:element name="Rejection" type="RejectionComplexType"/>
+				<xs:element name="Version" type="xs:positiveInteger"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="timeStamp" type="xs:dateTime" use="required"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="AgentComplexType">
+		<xs:annotation>
+			<xs:documentation> An "agent" is the original source or modifier of the RTML in the document - e.g. a stand-along program, an RTML
+				Web-Server, etc. The term comes from the eStar Project (www.eStar.org.uk") whose networked software routines are called "Intelligent
+				Agents": they use an &lt;IntelligentAgent&gt; element in their version of RTML 2.0 for this purpose. A minimum
+				&lt;Agent&gt; consists of a name= attribute. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="EmptyElementTypes">
+				<xs:attribute name="name" type="xs:token" use="required"/>
+				<xs:attribute name="uri" type="xs:anyURI"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="RejectionComplexType">
+		<xs:annotation>
+			<xs:documentation> This element can be used to express the reasons for the rejection of an observing request. Used within an
+				&lt;Entry&gt; of the top-level &lt;History&gt; element, it gives a computer-readable information about why an
+				observing request was rejected as a whole. An optional &lt;Description&gt; can be included in order to give more detailed
+				information relating to the particular rejection reason. The standard rejection codes are "not authorized" (either no principle access
+				or the access has been denied for other reasons), "insufficient priority" (i.e. service could have been provided, but other users had
+				higher priority, so causing a rejection of the request in this form at this time), "not available" (nobody is being served due, e.g.,
+				to down time, repairs, etc.), "syntax" (the document was not syntactically correct), or "other" (hopefully explained in the
+				&lt;Description&gt;). </xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+		</xs:sequence>
+		<xs:attribute name="reason" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="not authorized"/>
+					<xs:enumeration value="insufficient priority"/>
+					<xs:enumeration value="other"/>
+					<xs:enumeration value="not available"/>
+					<xs:enumeration value="syntax"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          OBSERVATION RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="CalibrationObservationComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of a generic spectroscopic calibration observation. Like &lt;Observation&gt;, this is mostly a
+				place-holder which merely says "Do an appropriate calibration right now using the present parameters." What constitutes an
+				"appropriate" calibration observation should be decided by the server and the context of the element, but this presumably entails
+				doing something like observing a wavelength standard (e.g. between sequences of normal observations to insure wavelength calibration
+				stability) or taking a flat-field exposure. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Calibration" type="CalibrationComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="ImageData" type="ImageDataComplexType"/>
+			<xs:element name="Telemetry" type="TelemetryComplexType"/>
+			<xs:element name="Cost" type="CostComplexType"/>
+			<xs:element name="Probability" type="ProbabilityComplextType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="type" type="CalibrationTypes"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ObservationComplexType">
+		<xs:annotation>
+			<xs:documentation> A container for all the information necessary to produce an image given some telescope and instrument (e.g.
+				&lt;Camera&gt;). Note that &lt;DateTimeStarted&gt; is not &lt;DateTimeStart&gt; (as in
+				&lt;DateTimeConstraint&gt;) but is the DateTime in a "report" about observations already performed. A "request" (the default)
+				is for a single observation which, when carried out, can be described by a "report". The "reservation" value of the "type" attribute
+				is for live-use where a block of time is to be reserved during which many things - including observations - might be made and
+				eventually "report"ed. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Calibration" type="CalibrationComplexType"/>
+			<xs:element name="Cost" type="CostComplexType"/>
+			<xs:element name="DateTimeStarted" type="DateTimeComplexType"/>
+			<xs:element name="DateTimeEnded" type="DateTimeComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="ImageData" type="ImageDataComplexType"/>
+			<xs:element name="Probability" type="ProbabilityComplextType"/>
+			<xs:element name="SourceCatalogue" type="SourceCatalogueComplexType"/>
+			<xs:element name="Telemetry" type="TelemetryComplexType"/>
+			<xs:element name="WeatherReport" type="WeatherReportOrConstraintComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="type" default="request">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="request"/>
+					<xs:enumeration value="reservation"/>
+					<xs:enumeration value="report"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="status">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="offer"/>
+					<xs:enumeration value="request"/>
+					<xs:enumeration value="reservation"/>
+					<xs:enumeration value="report"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ImageDataComplexType">
+		<xs:annotation>
+			<xs:documentation> In a request, this element describes things like whether compression should be used, how the image should be delivered,
+				what telemetry was created during the actual exposure, the name of the final file, and where the file can be uploaded.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Base64Data" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="CompressionTypes" type="CompressionTypesSimpleType" minOccurs="0"/>
+			<!-- ???? why the element name CompressionTypes is plural? -->
+			<xs:element name="Delivery" type="DeliveryTypes" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="FITSHeader" type="xs:string" minOccurs="0"/>
+			<xs:element name="Telemetry" type="TelemetryComplexType" minOccurs="0"/>
+			<xs:element name="Uri" type="xs:anyURI" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="SourceCatalogueComplexType">
+		<xs:annotation>
+			<xs:documentation> The content of this element is a catalogue of sources found in the data, either is an ill-determined text format, in
+				standard sextractor format, in general XML, or in VO-standard VOTable format. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="MixedContentComplexType">
+				<xs:attribute name="type" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="other"/>
+							<xs:enumeration value="sextractor"/>
+							<xs:enumeration value="text"/>
+							<xs:enumeration value="VOTable"/>
+							<xs:enumeration value="xml"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="TelemetryComplexType">
+		<xs:annotation>
+			<xs:documentation> Text output from some device or server related to the execution of a remote command. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="CompressionTypesSimpleType">
+		<xs:annotation>
+			<xs:documentation> Compression format for &lt;ImageData&gt;. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="base64"/>
+			<xs:enumeration value="zip"/>
+			<xs:enumeration value="gzip"/>
+			<xs:enumeration value="compress"/>
+			<xs:enumeration value="none"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--                          PROJECT RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="ProjectComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of the people/institutions and scientific reasons behind the observing request, corresponding to what is
+				usually called "Phase I" information. The minimum information is a single &lt;Contact&gt;. More than one optional
+				&lt;ProjectID&gt; (e.g. different institutions), &lt;Contact&gt; (different investigators), and optional
+				&lt;Keyword&gt; may be given. Observing time is can be allocated either via &lt;Contact&gt; or
+				&lt;TimeAllocation&gt;. The possibility of using hierarchical projects is mainly intended for the transfer of server (rather
+				than client) information. The &lt;AckText&gt; element, when given my servers, should be used in any publications resulting
+				from observations. The &lt;VOEventReference&gt; should contain a syntactically correct IVOA ivorn of a VOEvent message.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="AckText" type="MixedContentComplexType"/>
+			<xs:element name="Contact" type="ContactComplexType"/>
+			<xs:element name="ObservingPeriod" type="ObservingPeriodComplexType"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="Abstract" type="xs:string"/>
+			<xs:element name="ScientificJustification" type="MixedContentComplexType"/>
+			<xs:element name="TechnicalJustification" type="MixedContentComplexType"/>
+			<xs:element name="Keyword" type="xs:string"/>
+			<xs:element name="Priority" type="PriorityComplexType"/>
+			<xs:element name="TimeAllocation" type="TimeAllocationComplexType"/>
+			<xs:element name="VOEventReference" type="xs:token"/>
+			<xs:element name="Project" type="ProjectComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="ProjectID" type="xs:token"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ContactComplexType">
+		<xs:annotation>
+			<xs:documentation> Contains all of the information associated with a single user (person or institution). Reasonably, only a single
+				&lt;TimeAllocation&gt; is allowed, since otherwise how will a server know what to charge? </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Username" type="UsernameComplexType"/>
+			<xs:choice>
+				<xs:element name="Name" type="xs:string"/>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element name="LastName" type="xs:string"/>
+					<xs:element name="FirstName" type="xs:string"/>
+				</xs:choice>
+			</xs:choice>
+			<xs:element name="Communication" type="CommunicationComplexType"/>
+			<xs:element name="Institution" type="InstitutionComplexType"/>
+			<xs:element name="TimeAllocation" type="TimeAllocationComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="principalInvestigator" type="xs:boolean" default="false"/>
+		<xs:attribute name="principalContact" type="xs:boolean" default="false"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ObservingPeriodComplexType">
+		<xs:annotation>
+			<xs:documentation> The time period during which the observations are to be carried out (e.g. semesters or observing seasons), described by
+				a string (syntax varies considerably with observatory, e.g. ESO uses "Period nn") and/or an ISO time period. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:element name="Start" type="xs:dateTime"/>
+				<xs:element name="Stop" type="xs:dateTime"/>
+			</xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="PriorityComplexType">
+		<xs:annotation>
+			<xs:documentation> A non-negative integer indicating the relative priority of a &lt;Project&gt;, &lt;Schedule&gt; or
+				&lt;Target&gt;. 1 is the highest priority, 2 the next highest, etc. The priority 0 is reserved for special purposes, usually
+				"live" observations and/or Targets-of-Opportunity, which require the immediate attention of the telecope. The lowest priority which is
+				bound to be useful is 10 but the exact method which is used to determine the cumulative priority of a particular observation (i.e.
+				project priority and target/schedule priority) or the ultimate effect on the relative chance of being carried out is not fixed by the
+				RTML standard, so the client's priority numbers are merely suggestions to the servers/telescope schedulers. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:positiveInteger"/>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="TimeAllocationComplexType">
+		<xs:annotation>
+			<xs:documentation> The absolute or relative amount of observing time to be charged to a person or institution defined by the
+				&lt;Contact&gt;. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="percent"/>
+							<xs:enumeration value="hours"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="UsernameComplexType">
+		<xs:annotation>
+			<xs:documentation> An RTML Username is some global user identification of a user, e.g. specified by a RTMLUniqueName. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:token">
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="CommunicationComplexType">
+		<xs:annotation>
+			<xs:documentation> Contains all of the information needed to locate person or institution, e.g. address, phone, email etc.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="AddressLine" type="xs:string"/>
+			<xs:element name="CountryCode" type="xs:token"/>
+			<xs:element name="Email" type="xs:anyURI"/>
+			<xs:element name="Fax" type="xs:token"/>
+			<xs:element name="Telephone" type="xs:token"/>
+			<xs:element name="Uri" type="xs:anyURI"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="InstitutionComplexType">
+		<xs:annotation>
+			<xs:documentation> The details of the institution (e.g. school or observatory) in a &lt;Contact&gt; element describing the user
+				requesting the data (or, in an RTML dump, a server). Hierarchies of &lt;Institution&gt;'s are allowed (used to express, e.g.,
+				the &lt;TimeAllocation&gt;'s available for each sub-institution). </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Communication" type="CommunicationComplexType" minOccurs="0"/>
+			<xs:element name="TimeAllocation" type="TimeAllocationComplexType" minOccurs="0"/>
+			<xs:element name="Institution" type="InstitutionComplexType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="university"/>
+					<xs:enumeration value="research"/>
+					<xs:enumeration value="commercial"/>
+					<xs:enumeration value="private"/>
+					<xs:enumeration value="school"/>
+					<xs:enumeration value="network"/>
+					<xs:enumeration value="government"/>
+					<xs:enumeration value="NGO"/>
+					<!-- TODO: we need an unknown type too -->
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          SCHEDULE RELATED COMPLEX TYPES                   -->
+	<xs:complexType name="ScheduleComplexType">
+		<xs:annotation>
+			<xs:documentation> This is the primary element which identifies which &lt;Observation&gt;'s are to be performed. All of the
+				scheduling constraint elements within a &lt;Schedule&gt; are applied to all &lt;Observations&gt; at lower levels.
+				Child &lt;Schedule&gt; elements can be used to make subset-constraints. A complete Schedule can be put on hold using
+				status="inactive", or individual &lt;Observations&gt; can be put on hold using the same method. Only a Schedule either 1. with
+				no status attribute and some &lt;Observation&gt;'s with status="active" or 1. with an status="active" and
+				&lt;Observation&gt;'s with status="active" can be carried out. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="AirmassConstraint" type="AirmassConstraintComplexType"/>
+			<xs:element name="ApertureConstraint" type="ApertureConstraintComplexType"/>
+			<xs:element name="CatalogueConstraint" type="CatalogueConstraintComplexType"/>
+			<xs:element name="DateTimeConstraint" type="DateTimeConstraintComplexType"/>
+			<xs:element name="ExposureConstraint" type="ExposureConstraintComplexType"/>
+			<xs:element name="ExtinctionConstraint" type="ExtinctionConstraintComplexType"/>
+			<xs:element name="FieldOfViewConstraint" type="FieldOfViewConstraintComplexType"/>
+			<xs:element name="MoonConstraint" type="MoonConstraintComplexType"/>
+			<xs:element name="PhaseConstraint" type="PhaseConstraintComplexType"/>
+			<xs:element name="PositionConstraint" type="PositionConstraintComplexType"/>
+			<xs:element name="SeeingConstraint" type="SeeingConstraintComplexType"/>
+			<xs:element name="SeriesConstraint" type="SeriesConstraintComplexType"/>
+			<xs:element name="SimultaneityConstraint" type="SimultaneityConstraintComplexType"/>
+			<xs:element name="SkyConstraint" type="SkyConstraintComplexType"/>
+			<xs:element name="WaitConstraint" type="WaitConstraintComplexType"/>
+			<xs:element name="WeatherConstraint" type="WeatherReportOrConstraintComplexType"/>
+			<xs:element name="Calibration" type="CalibrationComplexType"/>
+			<xs:element name="CalibrationObservation" type="CalibrationObservationComplexType"/>
+			<xs:element name="Camera" type="CameraComplexType"/>
+			<xs:element name="Catalogue" type="CatalogueComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Detector" type="DetectorComplexType"/>
+			<xs:element name="Device" type="DeviceComplexType"/>
+			<xs:element name="Exposure" type="ExposureComplexType"/>
+			<xs:element name="FilterWheel" type="FilterWheelComplexType"/>
+			<xs:element name="Observation" type="ObservationComplexType"/>
+			<xs:element name="Pipeline" type="PipelineComplexType"/>
+			<xs:element name="Priority" type="PriorityComplexType"/>
+			<xs:element name="Schedule" type="ScheduleComplexType"/>
+			<xs:element name="Setup" type="SetupComplexType"/>
+			<xs:element name="Scoring" maxOccurs="1" type="ScoringComplexType"/>
+			<xs:element name="Spectrograph" type="SpectrographComplexType"/>
+			<xs:element name="Target" type="TargetComplexType" minOccurs="0"/>
+			<xs:element name="Telescope" type="TelescopeComplexType" minOccurs="0"/>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+		<xs:attribute name="status" type="StatusTypes"/>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="requested"/>
+					<xs:enumeration value="triggered"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="CatalogueComplexType">
+		<xs:annotation>
+			<xs:documentation> An astronomical source catalogue containing the targets to be observed. If the catalogue is named, then the
+				&lt;Target&gt;'s name is implied to be that contained within that catalogue. For example: &lt;Catalogue
+				name="USNO"&gt; &lt;Target name="1234+5678"/&gt; &lt;/Catalogue&gt; refers to a named object with the official
+				USNO catalogue number "1234+5678". This feature permits the user to use standardized names with servers which support the named
+				catalogue. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Target" type="TargetComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="TargetComplexType">
+		<xs:annotation>
+			<xs:documentation> Description of everything needed to point a telescope on a source. Only a single &lt;Priority&gt; is allowed,
+				since otherwise the server won't know which one to use. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Classification" type="TargetTypes"/>
+			<xs:element name="Coordinates" type="CoordinatesComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="FinderChart" type="xs:anyURI"/>
+			<xs:element name="Priority" type="PriorityComplexType"/>
+			<xs:element name="TargetBrightness" type="TargetBrightnessComplexType"/>
+			<xs:element name="TargetShape" type="TargetShapeComplexType"/>
+			<xs:element name="TrackRate" type="TrackRateComplexType"/>
+			<xs:element name="Velocity" type="VelocityComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="TargetBrightnessComplexType">
+		<xs:annotation>
+			<xs:documentation> Brightness of &lt;Target&gt;, either in Magnitudes or in flux units. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:sequence minOccurs="0">
+				<xs:element name="Magnitude" type="xs:double"/>
+				<xs:element name="Type" type="FilterTypes"/>
+				<xs:element name="Error" type="xs:double" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:element name="Flux">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+							<!-- changed in order to preserve consistency -->
+
+							<xs:element name="Value" type="xs:double"/>
+							<xs:element name="Error" type="xs:double" minOccurs="0"/>
+						</xs:all>
+						<xs:attribute name="units" type="FluxUnitsTypes"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="TargetShapeComplexType">
+		<xs:annotation>
+			<xs:documentation> Rough description of the target appearance: either a description in words (may not be parseable!), a circular shape, a
+				rectangular shape, an elliptical shape, or a random outline. </xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<!-- ????choice occurence is the default one, which is 1, so on of its elements will appear - not possible to add a desription and one of the shapes - Is this the willing behavior? -->
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="CircularDiameter">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" fixed="arcseconds"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Rectangular">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Width" type="xs:double"/>
+						<xs:element name="Height" type="xs:double"/>
+					</xs:sequence>
+					<xs:attribute name="units" type="xs:string" fixed="arcseconds"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Elliptical">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Width" type="xs:double"/>
+						<xs:element name="Height" type="xs:double"/>
+						<xs:element name="PositionAngle" type="PositionAngleComplextType"/>
+					</xs:sequence>
+					<xs:attribute name="units" type="xs:string" fixed="arcseconds"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Outline">
+				<xs:complexType>
+					<xs:sequence minOccurs="3" maxOccurs="unbounded">
+						<xs:element name="Points" type="XYPairComplexType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="VelocityComplexType">
+		<xs:annotation>
+			<xs:documentation> Radial velocity, either in km/sec or as a redshift, of a &lt;Target&gt;. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="units">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="kilometers/second"/>
+							<xs:enumeration value="redshift"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="system">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="barycentric"/>
+							<xs:enumeration value="geocentric"/>
+							<xs:enumeration value="heliocentric"/>
+							<xs:enumeration value="lsr"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="ExposureComplexType">
+		<xs:annotation>
+			<xs:documentation> Sets the number and length of the exposures taken with a &lt;Camera&gt; or &lt;Spectrograph&gt;.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Value" minOccurs="1">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="units" type="xs:string" use="required" fixed="seconds"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attribute name="count" type="xs:positiveInteger" default="1"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ScoringComplexType">
+		<xs:annotation>
+			<xs:documentation> This element expresses the cost and probability of a completed observation request represented by the parent element
+				level. Used by servers to communicate the quality and price of their services to clients. Absolute times can be derived via DateTimes
+				associated with the parent element (e.g. the document's timeStamp or the &lt;Schedule&gt;'s
+				&lt;DateTimeConstraint&gt;). </xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="Score">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="EmptyElementTypes">
+							<xs:attribute name="delay" type="xs:duration" use="required"/>
+							<xs:attribute name="probability" type="xs:double"/>
+							<xs:attribute name="cumulative" type="xs:double"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          SCHEDULE RELATED - CONSTRAINTS COMPLEX TYPES                           -->
+	<xs:complexType name="AirmassConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Places constraints on acceptable airmass. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="maximum" type="PositiveDouble"/>
+		<xs:attribute name="minimum" type="PositiveDouble"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ApertureConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> An &lt;ApertureConstraint&gt; enables one to specify a minimum and/or maximum telescope aperture.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="maximum" type="NonNegativeDouble"/>
+		<xs:attribute name="minimum" type="NonNegativeDouble"/>
+		<xs:attribute name="units" type="xs:string" use="required" fixed="meters"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="CatalogueConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> &lt;CatalogueConstraint&gt;s should be considered equivalent to &lt;Target&gt;s, but require that the
+				scheduler select a &lt;Target&gt; from the &lt;Catalogue&gt; indicated by reference. The child-elements,
+				&lt;TargetVisit&gt;s, contain links to &lt;Target&gt;s plus information about how or how often the target should be
+				visited: "all" means that the order is irrelevant, but eventually all need to be visited; "any" means that the order is irrelevant;
+				"one" means that the choice of which one is irrelevant, but only a single one should be chosen; "ordered" means that all should be
+				done in exactly the order given in the catalogue; and "repeat" means do any of the targets which have already been done. The total
+				minimum and maximum number of visits for ALL targets in the referenced catalogue can be given. These choices are further constrainted
+				by the properties of the &lt;TargetVisit&gt;s, where the minimum and maximum number of visits for individual targets can be
+				fixed. The possibilities are indicated in the following table: | *Description* | *selection=* | | Do all of the targets in the
+				catalogue (i.e. don't stop until all are done). | "all" | | Do any of the targets in the catalogue (i.e. some don't have to be done).
+				| "any" | | Do a single target in the catalogue (i.e. the rest don't get done). | "one" | | Do *all* of the targets in the order
+				listed in the catalogue. | "ordered" | | Do any of the targets which have already been done at least once. | "repeat" |
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="TargetVisit" type="TargetVisitComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="selection">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="all"/>
+					<xs:enumeration value="any"/>
+					<xs:enumeration value="one"/>
+					<xs:enumeration value="ordered"/>
+					<xs:enumeration value="repeat"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="minimum" type="xs:positiveInteger"/>
+		<xs:attribute name="maximum" type="xs:positiveInteger"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="TargetVisitComplexType">
+		<xs:annotation>
+			<xs:documentation> Contained within &lt;CatalogueConstraint&gt;s, &lt;TargetVisit&gt;s are links to
+				&lt;Target&gt;s plus additional information pertinant to scheduling observations. This information is given via the attributes
+				"minimum=", and "maximum=", which are the min/max number of visits for the referenced target. When combined with the selection
+				criteria from &lt;CatalogueConstraint&gt;, a detailed management of what should be done is possible. Non-RTML content can be
+				included via an external schema. </xs:documentation>
+		</xs:annotation>
+
+		<xs:sequence>
+			<xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="minimum" type="xs:positiveInteger"/>
+		<xs:attribute name="maximum" type="xs:positiveInteger"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ExposureConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Equivalent in effect to an &lt;Exposure&gt; but where the actual exposure time used must be calculated by the
+				server based upon a given desired signal-to-noise or, optionally, an acceptable range of signal-to-noise. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Count" type="xs:positiveInteger" default="1" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="MinimumSignalToNoise" type="xs:double"/>
+			<xs:element name="MaximumSignalToNoise" type="xs:double" minOccurs="0"/>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="ExtinctionConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Places contraints on clouds, either in terms of magnitudes and/or in general terms of cloud type ("clear", "light",
+				"heavy"). </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Clouds" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="clear"/>
+						<xs:enumeration value="light"/>
+						<xs:enumeration value="scattered"/>
+						<xs:enumeration value="heavy"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Magnitudes" type="xs:double" minOccurs="0"/>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="FieldOfViewConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Places constraints on acceptable field-of-view. This is necessary when ordering images or spectra from anonymous
+				telescope servers to insure the desired objects are indeed covered. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="maximum" type="PositiveDouble"/>
+		<xs:attribute name="minimum" type="PositiveDouble"/>
+		<xs:attribute name="units" type="xs:string" use="required" fixed="meters"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="DateTimeConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> This constraint forces an observation to be made (attribute type="include", the default) or not to be made (attribute
+				type="exclude") between two given dates and times (expressed as ISO DateTime's). The maxDuration and minDuration attributes are used
+				by servers to indicate explicitly over what timescales they are willing to enable the constraint. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="DateTimeStart" type="DateTimeComplexType"/>
+			<xs:element name="DateTimeEnd" type="DateTimeComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="type" default="include">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="include"/>
+					<xs:enumeration value="exclude"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="maxDuration" type="xs:duration"/>
+		<xs:attribute name="minDuration" type="xs:duration"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="MoonConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Describes the acceptable amounts of moonlight in terms of decimal lunar phase (0.0 is NM, 1 is FM), distance D from a
+				target (in degrees), and/or in terms of a Lorentzian weighting proportional to 1-1/(1-D^2/S^2), where S is the
+				&lt;WeightScalelength&gt; in degrees. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Distance" type="DoubleValueDegreesUnitsComplexType"/>
+			<xs:element name="MaximumPhase" type="xs:double"/>
+			<xs:element name="MinimumPhase" type="xs:double"/>
+			<xs:element name="WeightScalelength" type="DoubleValueDegreesUnitsComplexType"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="PhaseConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Constrains an observation to be made within some phase interval between PhaseStart and PhaseEnd defined by a quadratic
+				ephemeris: Phase = (t-PhaseTime)/[PhasePeriod+PhasePdot*(t-PhaseTime)] The &lt;PhasePeriod&gt; is written as an XML Schema
+				duration of the form P{(yyyy)Y{(mm)M}{(dd)D}{T{(hh)H}{(mm}M}{(ss.s..)S} (for example "P1Y2M3DT3H6M22.1S" uses all elements, but "P1Y"
+				and "PT6M22.1S" is also OK - note the presence of the "T" separator between the date and time part!). All times are assumed to be UT.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="PhaseEnd" type="xs:double"/>
+			<xs:element name="PhasePdot" type="xs:double" default="0" minOccurs="0"/>
+			<xs:element name="PhasePeriod" type="xs:duration"/>
+			<xs:element name="PhaseStart" type="xs:double"/>
+			<xs:element name="PhaseTime" type="DateTimeComplexType"/>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="PositionConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Constrains an observation to be made within some section of the sky defined by a &lt;Coordinates&gt; polygon.
+				Two &lt;Coordinates&gt; define a box rather than a line. Can be used by RTML servers as a means of requesting sets of RTML
+				documents. </xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Coordinates" type="CoordinatesComplexType" minOccurs="2" maxOccurs="unbounded"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="SeeingConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Describes what seeing conditions (in arcsecs) are acceptable. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="maximum" type="PositiveDouble"/>
+		<xs:attribute name="minimum" type="PositiveDouble"/>
+		<xs:attribute name="units" type="xs:string" use="required" fixed="arcseconds"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="SeriesConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Defines the scheduling constraints on a series of scheduled observations defined within a single
+				&lt;Schedule&gt; but separated by a constant interval plus a time tolerance (written as an XML Schema duration of the form
+				P{(yyyy)Y{(mm)M}{(dd)D}{T{(hh)H}{(mm}M}{(ss.s..)S} (for example "P1Y2M3DT3H6M22.1S" uses all elements, but "P1Y" and "PT6M22.1S" is
+				also OK - note the presence of the "T" separator between the date and time part!). There is no formal definition of how the tolerance
+				is defined and used, but the expectation is that it is a fairly solid limit (e.g. step function or Gaussian of width
+				&lt;Tolerance&gt;). The optional minDuration and maxDuration attributes are used by servers to advertise the timescales over
+				which they are willing to perform this constraint. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Count" type="xs:positiveInteger" default="1" minOccurs="0"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			<xs:element name="Interval" type="xs:duration"/>
+			<xs:element name="Tolerance" type="xs:duration"/>
+		</xs:all>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+		<xs:attribute name="minDuration" type="xs:duration"/>
+		<xs:attribute name="maxDuration" type="xs:duration"/>
+	</xs:complexType>
+
+	<xs:complexType name="SimultaneityConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Specifies that the sub-&lt;Schedule&gt;'s within the present &lt;Schedule&gt; should be carried out
+				simultaneously within the given tolerance expressed as an XML duration. Obviously, this may place severe constraints/burdens on some
+				servers and so should be used carefully. </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Tolerance" type="xs:duration"/>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="SkyConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Describes what sky brightnesses are acceptable, either as a flux (in units of magnitudes per square-arcsec) or a
+				general brightness level (the classical "dark", "gray", and "bright" times). See &lt;MoonConstraint&gt; for a different
+				formulation. </xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+				<xs:element name="Flux" type="xs:double"/>
+				<xs:element name="Units" type="xs:string" fixed="magnitudes/square-arcsecond"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="Brightness">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="bright"/>
+							<xs:enumeration value="dark"/>
+							<xs:enumeration value="gray"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="WaitConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Defines the scheduling constraint of waiting a minimum amount of time since the completion of a previously completed
+				scheduled event defined by an assigned id (the attribute &lt;tt&gt;previous=".."&lt;/tt&gt;). The reference to the
+				previous &lt;Schedule&gt; could have been kept as a separate element, but this way all id's and ref's are uniformly
+				attributes. The interval is written as an XML Schema duration of the form P{(yyyy)Y{(mm)M}{(dd)D}{T{(hh)H}{(mm}M}{(ss.s..)S} (for
+				example "P1Y2M3DT3H6M22.1S" uses all elements, but "P1Y" and "PT6M22.1S" is also OK - note the presence of the "T" separator between
+				the date and time part!). </xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Interval" type="xs:duration"/>
+			<xs:element name="Description" type="DescriptionComplexType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="previous" type="UniqueNamesSimpleType"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<!--                          SETUP RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="SetupComplexType">
+		<xs:annotation>
+			<xs:documentation> This is a "macro" element which enables common information or functionality to be defined (either via a locally unique
+				"id=..." or a globally unique "uid=...") or accessed (either via a local "ref=..." or a global "uref=..."). elements which have ID's
+				within a &lt;Setup&gt; can be accessed outside of their nominal hierarchy (effectively all RTML elements can be placed within
+				a &lt;Setup&gt;), since their formal hierarchy is defined somewhere else (where their ID's are defined). </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Agent" type="AgentComplexType"/>
+			<xs:element name="AirmassConstraint" type="AirmassConstraintComplexType"/>
+			<xs:element name="Aperture" type="ApertureComplexType"/>
+			<xs:element name="ApertureConstraint" type="ApertureConstraintComplexType"/>
+			<xs:element name="BadPixels" type="BadPixelsComplexType"/>
+			<xs:element name="Base64Data" type="xs:base64Binary"/>
+			<xs:element name="Bias" type="BiasComplexType"/>
+			<xs:element name="Calibration" type="CalibrationComplexType"/>
+			<xs:element name="CalibrationObservation" type="CalibrationObservationComplexType"/>
+			<xs:element name="Camera" type="CameraComplexType"/>
+			<xs:element name="Catalogue" type="CatalogueComplexType"/>
+			<xs:element name="CompressionTypes" type="CompressionTypesSimpleType"/>
+			<xs:element name="Contact" type="ContactComplexType"/>
+			<xs:element name="Coordinates" type="CoordinatesComplexType"/>
+			<xs:element name="CosmicRays" type="CosmicRaysComplexType"/>
+			<xs:element name="DarkCurrent" type="DarkCurrentComplexType"/>
+			<xs:element name="DateTimeConstraint" type="DateTimeConstraintComplexType"/>
+			<xs:element name="Declination" type="DeclinationComplexType"/>
+			<xs:element name="Delivery" type="DeliveryTypes"/>
+			<xs:element name="Detector" type="DetectorComplexType"/>
+			<xs:element name="Device" type="DeviceComplexType"/>
+			<xs:element name="Description" type="DescriptionComplexType"/>
+			<xs:element name="Type" type="DeviceTypes"/>
+			<xs:element name="Exposure" type="ExposureComplexType"/>
+			<xs:element name="ExposureConstraint" type="ExposureConstraintComplexType"/>
+			<xs:element name="ExtinctionConstraint" type="ExtinctionConstraintComplexType"/>
+			<xs:element name="FieldOfViewConstraint" type="FieldOfViewConstraintComplexType"/>
+			<xs:element name="Filter" type="FilterComplexType"/>
+			<xs:element name="FilterWheel" type="FilterWheelComplexType"/>
+			<xs:element name="FlatField" type="FlatFieldComplexType"/>
+			<xs:element name="FocalLength" type="FocalLengthComplexType"/>
+			<xs:element name="Fringing" type="FringingComplexType"/>
+			<xs:element name="Grating" type="GratingComplexType"/>
+			<xs:element name="ImageData" type="ImageDataComplexType"/>
+			<xs:element name="Institution" type="InstitutionComplexType"/>
+			<xs:element name="Location" type="LocationComplexType"/>
+			<xs:element name="Mirrors" type="MirrorsComplexType"/>
+			<xs:element name="MoonConstraint" type="MoonConstraintComplexType"/>
+			<xs:element name="Observation" type="ObservationComplexType"/>
+			<xs:element name="PhaseConstraint" type="PhaseConstraintComplexType"/>
+			<xs:element name="Pipeline" type="PipelineComplexType"/>
+			<xs:element name="PlateScale" type="PlateScaleComplexType"/>
+			<xs:element name="PositionAngle" type="PositionAngleComplextType"/>
+			<xs:element name="PositionConstraint" type="PositionConstraintComplexType"/>
+			<xs:element name="Priority" type="PriorityComplexType"/>
+			<xs:element name="Project" type="ProjectComplexType"/>
+			<xs:element name="RightAscension" type="RightAscensionComplexType"/>
+			<xs:element name="Schedule" type="ScheduleComplexType"/>
+			<xs:element name="SeeingConstraint" type="SeeingConstraintComplexType"/>
+			<xs:element name="SeriesConstraint" type="SeriesConstraintComplexType"/>
+			<xs:element name="Setup" type="SetupComplexType"/>
+			<xs:element name="SimultaneityConstraint" type="SimultaneityConstraintComplexType"/>
+			<xs:element name="SkyConstraint" type="SkyConstraintComplexType"/>
+			<xs:element name="Slit" type="SlitComplexType"/>
+			<xs:element name="SlitMask" type="SlitMaskComplexType"/>
+			<xs:element name="SpectralEfficiency" type="SpectralEfficiencyComplexType"/>
+			<xs:element name="Spectrograph" type="SpectrographComplexType"/>
+			<xs:element name="Target" type="TargetComplexType"/>
+			<xs:element name="TargetBrightness" type="TargetBrightnessComplexType"/>
+			<xs:element name="TargetShape" type="TargetShapeComplexType"/>
+			<xs:element name="Telescope" type="TelescopeComplexType"/>
+			<xs:element name="TrackRate" type="TrackRateComplexType"/>
+			<xs:element name="Username" type="UsernameComplexType"/>
+			<xs:element name="Velocity" type="VelocityComplexType"/>
+			<xs:element name="WaitConstraint" type="WaitConstraintComplexType"/>
+			<xs:element name="WeatherConstraint" type="WeatherReportOrConstraintComplexType"/>
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:choice>
+		<xs:attribute name="timeStamp" type="xs:dateTime"/>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+	<!--                          WEATHER REPORT AND CONSTRAINTS RELATED COMPLEX TYPES                    -->
+	<xs:complexType name="WeatherReportOrConstraintComplexType">
+		<xs:annotation>
+			<xs:documentation> Weather information used in &lt;WeatherConstraint&gt; and &lt;WeatherReport&gt;. The wind direction is
+				measured in degrees just the same as for &lt;Azimuth&gt;, i.e. 0 is South and West is 90 degrees. </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Particles" type="WeatherParticlesComplexType"/>
+			<xs:element name="RelativeHumidity" type="WeatherRelativeHumidityComplexType"/>
+			<xs:element name="Temperature" type="WeatherTemperatureComplexType"/>
+			<xs:element name="WindDirection" type="WeatherWindDirectionComplexType"/>
+			<xs:element name="WindSpeed" type="WeatherWindSpeedComplexType"/>
+			<xs:element name="Precipitation" type="xs:boolean"/>
+			<xs:element name="Seeing" type="WeatherSeeingComplexType"/>
+		</xs:choice>
+		<xs:attribute name="begin" type="xs:dateTime"/>
+		<xs:attribute name="end" type="xs:dateTime"/>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="include"/>
+					<xs:enumeration value="exclude"/>
+					<xs:enumeration value="report"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="RTMLAttributes"/>
+	</xs:complexType>
+
+	<xs:complexType name="WeatherParticlesComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="maximum" type="NonNegativeDouble"/>
+				<xs:attribute name="minimum" type="NonNegativeDouble"/>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="parts_per_million"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="WeatherRelativeHumidityComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="maximum">
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="minimum">
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="percent"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="WeatherTemperatureComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="minimum" type="xs:double"/>
+				<xs:attribute name="maximum" type="xs:double"/>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="degrees_celcius"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="WeatherWindDirectionComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="mean" type="xs:double"/>
+				<xs:attribute name="range" type="xs:double"/>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="degrees"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="WeatherWindSpeedComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="maximum" type="NonNegativeDouble"/>
+				<xs:attribute name="minimum" type="NonNegativeDouble"/>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="kilometers_per_hour"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="WeatherSeeingComplexType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="minimum" type="xs:double"/>
+				<xs:attribute name="maximum" type="xs:double"/>
+				<xs:attribute name="units" type="xs:string" use="required" fixed="arcseconds"/>
+				<xs:attributeGroup ref="RTMLAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<!--                          ATTRIBUTE GROUPS                                                        -->
+	<xs:attributeGroup name="RTMLAttributes">
+		<xs:annotation>
+			<xs:documentation> The attributes potentially needed by every RTML element: * id (local key of an element), the normal XML id with the
+				normal XML constraints (not many non-alphabetic characters allowed!); * ref (reference to local id (e.g. ref="myID"); * a reference to
+				a non-local unique id of a document plus optional reference to a ref within the document (e.g.
+				uref="rtml://DE.Uni-Goettingen.MONET/abcdefg#myID"). </xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="uref" type="UniqueNamesSimpleType"/>
+	</xs:attributeGroup>
+	<!--
+		<xs:attributeGroup name="RTMLAttributes">
+		<xs:annotation>
+		<xs:documentation>
+		The attributes needed by every RTML element: id (local key of an element) and ref (reference to local id (e.g. ref="myID") or to a non-local unique id (e.g.  ref="DE.Uni-Goettingen.MONET://abcdefg#myID")
+		</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="uref" type="UniqueNameType"/>
+		</xs:attributeGroup>
+	-->
+	<!--                          ATTRIBUTES                                                              -->
+
+	<!--                          GROUPS                                                                  -->
+	<!--                          ELEMENTS                                                                -->
+	<xs:element name="RTML">
+		<xs:annotation>
+			<xs:documentation> The highest level element in an RTML document, containing at least a &lt;History&gt; element and valid version,
+				mode, and uid attributes. The "mode" attribute determines the purpose of the document: * "resource" is simply a description of a set
+				of available facilities available at a server (formerly called "dump" and often referred to as "Phase 0" information); * "inquiry" is
+				a client request to consider whether the observations described by the document can be performed by a server; * "offer" is a formal
+				offer by a server to perform the observations; * "request" is a formal ordering of observations by a client; * "confirm" is a
+				confirmation by a server of an ordering by a "request" or "abort" document; * "reject" is the communication by a server that a request
+				will not or no longer be carried out. * "update" is a request for information by a client and/or a notification by a server about the
+				status of a previously ordered observation; * "incomplete" is a notification by the server that some observations have been made, but
+				the request will no longer be processed; * "complete" is a notification by the server that all of the observations have been made; *
+				"abort" indicates that the request should be stopped. * "fail" indicates that a server is unable to continue processing the request. *
+				"acknowledge" is a signal that a change in the status of a request has been received/processed. The "expires" attribute is a DateTime
+				which, if sent by a server, tells how long an offer is good. The &lt;RespondTo&gt; element is a valid URL (e.g. a TCP/IP port)
+				to which acknowledgement, confirmation, rejecttion, and/or update info can be sent. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="History" type="HistoryComplexType"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="Calibration" type="CalibrationComplexType"/>
+					<xs:element name="Camera" type="CameraComplexType"/>
+					<xs:element name="Catalogue" type="CatalogueComplexType"/>
+					<xs:element name="Cost" type="CostComplexType"/>
+					<xs:element name="Detector" type="DetectorComplexType"/>
+					<xs:element name="Device" type="DeviceComplexType"/>
+					<xs:element name="Pipeline" type="PipelineComplexType"/>
+					<xs:element name="Project" type="ProjectComplexType"/>
+					<xs:element name="RespondTo" type="xs:token" maxOccurs="unbounded"/>
+					<xs:element name="Schedule" type="ScheduleComplexType"/>
+					<xs:element name="Scoring" maxOccurs="1" type="ScoringComplexType"/>
+					<xs:element name="Setup" type="SetupComplexType"/>
+					<xs:element name="Spectrograph" type="SpectrographComplexType"/>
+					<xs:element name="Target" type="TargetComplexType"/>
+					<xs:element name="Telescope" type="TelescopeComplexType"/>
+					<xs:element name="WeatherReport" type="WeatherReportOrConstraintComplexType"/>
+					<xs:any namespace="##other" processContents="strict"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" use="required" fixed="3.1a"/>
+			<xs:attribute name="uid" type="UniqueNamesSimpleType" use="required"/>
+			<xs:attribute name="mode" type="ModeSimpleType" use="required"/>
+			<xs:attribute name="expires" type="xs:dateTime"/>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
