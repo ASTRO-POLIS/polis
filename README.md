@@ -8,7 +8,13 @@ As the name suggests, the Public Observatory Location and Information Service pr
 1. Current known status changes and long-term night by night scheduling.
 1. Real time status changes and observation scheduling, facilitation of observatory to observatory real time communication and collaborative observations.
 
-To be listed, only the first level of services is required.
+## What is POLIS Provider?
+A POLIS Provider is a site, that lists observing sites following strictly the APIs and formats defined by the POLIS standard. To be a valid POLIS Provider, the site must implement only the first level of services. The implementation of the second and the third level services is optional. There are 4 types of providers:
+
+- `Public` site confirms strictly to the POLIS standard, and provides APIs in at least JSON format (XML is preferred  for production sites). The site MUST  list all known observing sites.
+- `Private` sites are locally used by different organisations to support internal infrastructure or as a performance / traffic cache.
+- `Mirror` site is a backup of a public site and should be used only in cases the public site is down for maintenance or because of technical problems.
+- `Experimental` site (as the name suggests), are used for implementing and testing new functionality or future unstable versions of the POLIS standard.
 
 ## Goals
 
@@ -17,8 +23,8 @@ To be listed, only the first level of services is required.
 - open standard, mostly free to use for everyone, but some high-end services (weather monitoring, push notifications) could be available only for paying users to cover related hosting and service charges.
 - can be used as datasource for mobile apps as well as various web UIs and JSON/XML based APIs.
 - supports API versions and JSON and XML formats
-- observatories could provide data either manually, or with APIs
-- distributed (no single point of failure). Different sites could provide complete or partial service and only level 1 services is required.
+- observatories could provide data either manually or with standard APIs
+- distributed (no single point of failure). Different sites could provide complete or partial service.
 
 ## APIs
 
@@ -44,7 +50,7 @@ Most APIs will involve unique (within POLIS) IDs. To avoid any privacy issues an
 Within an Observing Site all Observatories and/or instruments could have an optional unique IDs. Globally they could be identified using the following convention: `ObservingSiteID:::LocalID`
 
 ### Bootstrapping a new POLIS provider
-In order to launch a new POLIS site, data should be initialised using a known site. This project maintains a list of root URLs to well known sites that could be used to read the initial information. It is strongly suggested, that the administrators of a new POLIS provider announce the new provider to at least one of the known sites in order to be announced to the network of providers. Currently, there is only a single know POLIS provider: `polis.observer`.
+In order to launch a new POLIS site, data should be initialised using a known site. This project maintains a list of root URLs to well known sites that could be used to read the initial information. It is strongly suggested, that the administrators of a new POLIS provider announce the new provider to at least one of the known sites in order to be made available to the network of providers. Currently, there is only a single know POLIS provider: `polis.observer`.
 
 ### Data formats
 Both JSON and XML data formats are supported by POLIS. Because of its richness, support for schema, and schema validation it is recommended to use XML whenever possible.
