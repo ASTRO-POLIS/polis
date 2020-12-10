@@ -40,8 +40,8 @@ The initial idea for a POLIS like protocol was first discussed at one of the HTN
 
 Around 2012 the [StarCluster](www.starcluster.app) team developed a very primitive prototype that was able to exchange status information between two imaginary observatories, however further development did not take place.
 
-The idea for such a protocol was reborn in early 2019 when the StarCluster team started working on a new package of astronomy applications. In September 2020 [ASA](https://www.astrosysteme.com) and StarCluster worked together on a joined  bid for a new robotic telescope and it was during this period when the decision was made to start a new open source project with the goal to create a protocol and a database of modern observatories, to monitor and report their status, and to allow individual sites to negotiate automatically or with human support for observation times and joined observation schedules.
+The idea for such a protocol was reborn in early 2019 when the StarCluster team started working on a new package of astronomy applications. In September 2020 [ASA](https://www.astrosysteme.com) and StarCluster worked together on a joined  bid for a new robotic telescope and it was during this period when the decision was made to start a new open source project with the goal to create a protocol and database of modern observatories, which monitor and report their status, and to allow individual sites to negotiate automatically or with human support for observation times and joined observation schedules.
 
-Rick Hessman at Göttingen University (Germany) coined the name POLIS and introduced the StarCluster team to the work of Rachel Street, who independently developed a database for monitoring observatory statuses.
+Rick Hessman, University of Göttingen (Germany) coined the name POLIS and introduced the StarCluster team to the work of Rachel Street, who independently developed a database for monitoring observatory statuses.
 
 In November 2020 the ASTRO-Polis project was created on GitHub.
