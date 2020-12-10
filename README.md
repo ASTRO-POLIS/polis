@@ -6,7 +6,7 @@ As the name suggests, the Public Observatory Location and Information Service pr
 
 1. The Observatory Location and Information service describes the Observatory Facilities. It is only updated on demand (automatically, or manually) when there are changes at the facility.
 2. Currently known status changes and long-term night by night scheduling and observation reservation system.
-3. Real time status changes and observation scheduling, facilitates  observatory to observatory real time communication and collaborative observations.
+3. Real time status changes and observation scheduling, facilitates  for observatory to observatory real time communication and collaborative observations.
 
 ## What is POLIS Provider?
 A POLIS Provider is a site, that lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid POLIS Provider, the site must only implement the first level of services. Implementation of the second and third level services is optional. There are 4 types of providers:
