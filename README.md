@@ -30,10 +30,13 @@ A POLIS Provider is a site, that lists observing sites and strictly complies to 
 
 **Note:** the most current version of the documentation, sketches for new ideas, and different example files can be found in the `dev` branch.
 
-...
+=======
+- ...
 
 ## How to contribute
-...
+- Currently we are working on a macOS app to manage a POLIS service provider site. The app is in a very early stage (we still do most of the editing with a text editor), but if you are interested on managing a POLIS service site and use a current version of macOS drop us an email at polis_support@tuparev.com.
+
+- ...
 
 ## History
 The initial idea for a POLIS like protocol was first discussed at one of the HTN (Heterogeneous Network of Telescopes) conferences that took place about a decade ago in Tucson (AZ) and Göttingen (Germany). Initially an agent-based system that negotiates the exchange of observation time was discussed. The idea was to use RTML's `Dump` mode to describe the current status and capabilities of an observatory and to build a new negotiation protocol.
