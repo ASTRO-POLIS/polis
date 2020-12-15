@@ -29,8 +29,6 @@ A POLIS Provider is a site, that lists observing sites and strictly complies to 
 ## Further documentations
 
 **Note:** the most current version of the documentation, sketches for new ideas, and different example files can be found in the `dev` branch.
-
-=======
 - ...
 
 ## How to contribute
