@@ -32,8 +32,9 @@ A POLIS Provider is a site, that lists observing sites and strictly complies to 
 - ...
 
 ## How to contribute
-- Currently we are working on a macOS app to manage a POLIS service provider site. The app is in a very early stage (we still do most of the editing with a text editor), but if you are interested on managing a POLIS service site and use a current version of macOS drop us an email at polis_support@tuparev.com.
-
+- We are working on  a list of known to us observing sites, and soon we will start making it publicly available. Of course the information we have is very limited. The best way to keep this information up-to-date is if the people who run the observatories to maintain this information. And of course there are thousands of ground based observatories and satellites that we are not aware of. Please let us know about them, or if you are interested on maintaining the information about them, we will be happy to make available beta versions of tools to perform this task easily. (When stable, these tools of course will be made public domain).
+- Currently we are working on a macOS app to manage a POLIS service provider site. The app is in a very early stage (we still do most of the editing with a text editor), but if you are interested on managing a POLIS service site and use a current version of macOS drop us an email at polis-support@tuparev.com.
+- If you are an amateur astronomer we will be delighted to talk to you! One of our goals is to create a standard, that is opened and useful to everyone. Please drop us an email at polis@tuparev.com
 - ...
 
 ## History
