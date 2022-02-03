@@ -17,7 +17,7 @@
 					</author>
 				</authors>
 				<date>2020-11-20</date>
-				Initial version of the POLIS XML Schema. It defines only basic types of  the Level 1 services. The goal of this
+				Initial version of the POLIS XML Schema. It defines only basic types of the Level 1 services. The goal of this
 				version is to define only primitive POLIS provider discovery types and a basic list of observing sites. 
 				This version should be used only for experimental implementations. Mobile applications or Web-based services 
 				should not be publicly released, because most of the definition are expected to changed radically until first 

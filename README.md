@@ -9,25 +9,24 @@ As the name suggests, the Public Observatory Location and Information Service pr
 3. Real time status changes and observation scheduling, facilitates  for observatory to observatory real time communication and collaborative observations.
 
 ## What is POLIS Provider?
-A POLIS Provider is a site, that lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid POLIS Provider, the site must only implement the first level of services. Implementation of the second and third level services is optional. There are 4 types of providers:
+A POLIS Provider is a site, that lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid POLIS Provider, the site must only implement the first level of services. Implementation of the second and third level services is optional. There are 5 types of providers:
 
-- `Public` sites confirm strictly to the POLIS standard, and provide APIs  at least in the JSON format (however XML is preferred for production sites). The site MUST list all known observatories (Earth and Solar system).
+- `Public` sites confirm strictly to the POLIS standard, and provide APIs at least in the JSON format (however XML is preferred for production sites). The site MUST list all known observatories (Earth and Solar system).
 - `Private` sites are used locally by different organisations to support internal infrastructure or as a performance cache.
+- `Local` sites could be used for clients running on mobile devices or desktop apps. They are used as local cache and in the case of mobole apps - in offline mode.
 - `Mirror` sites are backups of a public sites and should be used only in the case that the public site is down for maintenance or due to technical issues.
 - `Experimental` sites (as the name suggests), are used for implementing and testing new functionality or future unstable versions of the POLIS standard.
 
 ## Goals
-
 - can list any type of facility: ground based, satellite, mobile, temporary (e.g. solar eclipse),...
 - encourages the participation of amateur astronomers and educational organisations (schools, universities)
-- open standard, mostly free to use for everyone, but some high-end services (weather monitoring, push notifications) could be available only for paying users to cover related hosting and service charges.
+- open standard, mostly free to use for everyone, but some high-end services (weather monitoring, push notifications) could be available only for subscribed paying users to cover related hosting and service charges.
 - can be used as datasource for mobile apps as well as for various web UIs and JSON/XML based APIs.
-- supports API versions and of JSON and XML formats
+- supports API versions and of JSON and XML formats (althouw the support for additional formats is permitted)
 - observatories can provide data either manually or with standard APIs
 - distributed (no single point of failure). Different sites could provide complete or partial service.
 
 ## Further documentations
-
 **Note:** the most current version of the documentation, sketches for new ideas, and different example files can be found in the `dev` branch.
 - ...
 
