@@ -456,6 +456,3 @@
 - Gamma-ray: Pair-creation
 
 - Gamma-ray: Air Cherenkov
-
-
-testing_acceses
