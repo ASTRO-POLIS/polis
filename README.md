@@ -8,8 +8,8 @@ As the name suggests, the Public Observatory Location and Information Service pr
 2. Currently known status changes and long-term night by night scheduling and observation reservation system.
 3. Real time status changes and observation scheduling, facilitates  for observatory to observatory real time communication and collaborative observations.
 
-## What is POLIS Provider?
-A POLIS Provider is a site, that lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid POLIS Provider, the site must only implement the first level of services. Implementation of the second and third level services is optional. There are 5 types of providers:
+## What is POLIS Service Provider?
+A POLIS Service Provider (PSP) is a web service that lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid PSP, the site must only implement the first level of services. Implementation of the second and third level services is optional. There are 5 types of providers:
 
 - `Public` sites confirm strictly to the POLIS standard, and provide APIs at least in the JSON format (however XML is preferred for production sites). The site MUST list all known observatories (Earth and Solar system).
 - `Private` sites are used locally by different organisations to support internal infrastructure or as a performance cache.
