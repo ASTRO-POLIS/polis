@@ -16,7 +16,7 @@ There are 5 types of providers:
 
 - `Public` sites conform strictly to the POLIS standard, and provide APIs in the JSON format at a minimum. The site *must* list all known observatories (Earth-based and otherwise).
 - `Private` sites are used locally by different organisations to support internal infrastructure or as a performance cache.
-- `Local` sites can be used for clients running on mobile devices or desktop apps. They are used as a local cache and, in the case of mobole apps, in offline mode.
+- `Local` sites can be used for clients running on mobile devices or desktop apps. They are used as a local cache and, in the case of mobile apps, in offline mode.
 - `Mirror` sites are backups of public sites. These should only be used when the public site is down, either for maintenance or because of technical issues.
 - `Experimental` sites are used for implementing and testing new functionality or future unstable versions of the POLIS standard.
 
@@ -25,16 +25,16 @@ There are 5 types of providers:
 1. Provide a comprehensive and up-to-date directory of every observatory in the solar system for use by researchers, students, developers, and the public.
 2. Creating a way for observatories to receive and handle observation proposals that is both easy for them and equitable for those seeking to use their facilities.
 3. Enable professional and amateur observatories alike to coordinate observations and collaborate in the pursuit of a shared goal.
-4. Empower amateur astronomers by exposing them to educational organizations and institutions in their area.
+4. Empower amateur astronomers by exposing them to educational organisations and institutions in their area.
 
 - can list any type of facility: ground based, satellite, mobile, temporary (e.g. solar eclipse),...
 - can be used as datasource for mobile apps as well as for various web UIs and JSON/XML based APIs.
 - supports API versions and of JSON and XML formats (XML is preferred for production sites; supporting additional formats is also permitted)
 - observatories can provide data either manually or with standard APIs
 
-A fully-implemented Level 3 POLIS Service Provider enables its observatory to utilize its available observation time in the most efficient way possible. Many observatories lie dormant on clear nights simply because no one has requested observation time. By connecting the observatory to the POLIS ecosystem, one can expose it to more people searching for a place to carry out their observations.
+A fully-implemented Level 3 POLIS Service Provider enables its observatory to utilise its available observation time in the most efficient way possible. Many observatories lie dormant on clear nights simply because no one has requested observation time. By connecting the observatory to the POLIS ecosystem, one can expose it to more people searching for a place to carry out their observations.
 
-By providing a centralized place for astronomers to make their observing proposals, they can be exposed to scientific instruments that fit their needs but that they were previously unaware of. This can help alleviate bottlenecks at high-traffic observatories and reduce average wait times for observers.
+By providing a centralised place for astronomers to make their observing proposals, they can be exposed to scientific instruments that fit their needs but that they were previously unaware of. This can help alleviate bottlenecks at high-traffic observatories and reduce average wait times for observers.
 
 POLIS is an important tool for the astronomy community, providing a way to connect observatories and researchers around the world and enabling collaborative research and scientific discovery.
 
@@ -45,7 +45,7 @@ POLIS is an important tool for the astronomy community, providing a way to conne
 
 ## How To Contribute
 
-We are currently building a list of all known (to us) observing sites, and we will be making it publicly available soon. This information is inherantly limited by the fact that almost none of it is first-hand—it's merely scraped from the internet. The best people to keep this information correct and up-to-date are, of course, the people who run the observatories themselves. **Please contact us** if you are interested in maintaining this information, either for your own institution/observatory or for one you are familiar with. We will be happy to provide beta versions of tools to perform this task easily. When stable, these tools will also be made public domain.
+We are currently building a list of all known (to us) observing sites, and we will be making it publicly available soon. This information is inherently limited by the fact that almost none of it is first-hand—it's merely scraped from the internet. The best people to keep this information correct and up-to-date are, of course, the people who run the observatories themselves. **Please contact us** if you are interested in maintaining this information, either for your own institution/observatory or for one you are familiar with. We will be happy to provide beta versions of tools to perform this task easily. When stable, these tools will also be made public domain.
 
 We are currently working on a macOS app to manage a POLIS Service Provider site. The app is in a very early stage (we still do most of the editing with a text editor), but if you are interested in managing a PSP site and use a current version of macOS, drop us an email at polis-support@tuparev.com.
 - If you are an amateur astronomer, we'd be delighted to talk to you! One of our goals is to create a standard that is open and useful to everyone. Drop us an email at polis@tuparev.com with any comments, questions, or suggestions. 
