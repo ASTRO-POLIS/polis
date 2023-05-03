@@ -1,16 +1,18 @@
 # POLIS - Public Observatory Location and Information Service
 
-**POLIS** is a new open standard that provides a hierarchical directory of distributed services that lists astronomical observing sites across the world and allows them to interact with each other and to the wider community of professional and amateur astronomers alike.
+**Pronunciation note:** POLIS should be read like the Greek word πόλη (town, city), and not like the government organisation responsible for issuing speeding tickets. So the accent should be on the letter "O" - PÓLIS.
+
+**POLIS** is a new open standard that provides a distributed directory of services that lists astronomical observing sites (optical telescopes, radio antennas, satellites, etc) across the Solar System (including, of course, the Earth). The standard allows the automated interaction between different observing sites as well as promotes  the discovery of astronomical instruments by the community of professional and amateur astronomers alike.
 
 The standard offers three increasing levels of service functionality:
 
-1. A pseudo-static information service that describes observatory facilities, instruments, devices, and configurations. It is updated on demand, either manually or automatically when there are changes at a facility.
-2. A long-term observation request and reservation system.
+1. A static information service that describes observatory facilities, instruments, devices, and configurations. It is updated on demand, either manually or automatically when there are changes at a facility.
+2. Support for long-term planning of observation request and enabling of distributed reservation system by providing status and configuration changes of various astronomical instruments.
 3. A real-time observation scheduling and observatory monitoring system that facilitates observatory-to-observatory communication and collaborative observations.
 
 ## What is POLIS Service Provider?
 
-A POLIS Service Provider (PSP) is a web service that lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid PSP, the site need only implement the first level of POLIS services, which makes it a "Level 1 PSP". Implementation of the second and third level of services is optional. 
+A POLIS Service Provider (PSP) is a web service (or just a website) that as a minimum lists observing sites and strictly complies to the POLIS Standard (formats) and query APIs. To be a valid PSP, the site need only implement the first level of POLIS services, which makes it a "Level 1 PSP". Implementation of the second and third level of services is optional. 
 
 There are 5 types of providers:
 
@@ -22,11 +24,10 @@ There are 5 types of providers:
 
 ## Goals
 
-1. Provide a comprehensive and up-to-date directory of every observatory in the solar system for use by researchers, students, developers, and the public.
-2. Creating a way for observatories to receive and handle observation proposals that is both easy for them and equitable for those seeking to use their facilities.
-3. Enable professional and amateur observatories alike to coordinate observations and collaborate in the pursuit of a shared goal.
-4. Empower amateur astronomers by exposing them to educational organisations and institutions in their area.
-
+- Provide a comprehensive and up-to-date directory of every observatory in the solar system for use by researchers, students, developers, and the public.
+- Creating a way for observatories to receive and handle observation proposals that is both easy for them and equitable for those seeking to use their facilities.
+- Enable professional and amateur observatories alike to coordinate observations and collaborate in the pursuit of a shared goal.
+- Empower amateur astronomers by exposing them to educational organisations and institutions in their area.
 - can list any type of facility: ground based, satellite, mobile, temporary (e.g. solar eclipse),...
 - can be used as datasource for mobile apps as well as for various web UIs and JSON/XML based APIs.
 - supports API versions and of JSON and XML formats (XML is preferred for production sites; supporting additional formats is also permitted)
