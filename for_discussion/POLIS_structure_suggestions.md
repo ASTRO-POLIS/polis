@@ -1,6 +1,8 @@
 # Level 1
 
-## Observing site - This is the lowest level of 3 layers of nesting for the observatory/telescope/instrument database we are currently compiling. The observing site itself will have the types defined previously by the Starcluster team (e.g. Ground based, space based, balloon etc.). We concentrate firstly on ground based observatories with the following tags. Follow up editions of this document for other types of observatory will be presented soon.
+## Observing site 
+
+This is the lowest level of 3 layers of nesting for the observatory/telescope/instrument database we are currently compiling. The observing site itself will have the types defined previously by the StarCluster team (e.g. Ground based, space based, balloon etc.). We concentrate firstly on ground based observatories with the following tags. Follow up editions of this document for other types of observatory will be presented soon.
 
 - **Official name:** (Official name of the observatory e.g. Siding springs, Paranal etc.)
 - **Type:** Fixed, ground-based observatory
@@ -23,7 +25,9 @@
 
 # Level 2
 
-## Telescope - This is the next nested layer up, i.e. for each Observing site, you go a level deeper to the telescope(s) available on each site (e.g. Optical class telescope, radio class telescope). Each telescope should have a name (or at least something like -> MEADE 16") and the tags give the basic information for each telescope. The name of each telescope will act as the starting point, with the EM spectrum coverage acting as a tag to sort out which types of telescope are available when using search or filter functions. There may be some sub-nesting depedendent on the telescope type (e.g. some types of sub-mm/radio telescopes have specific properties in certain sub-categories).
+## Telescope 
+
+This is the next nested layer up, i.e. for each Observing site, you go a level deeper to the telescope(s) available on each site (e.g. Optical class telescope, radio class telescope). Each telescope should have a name (or at least something like -> MEADE 16") and the tags give the basic information for each telescope. The name of each telescope will act as the starting point, with the EM spectrum coverage acting as a tag to sort out which types of telescope are available when using search or filter functions. There may be some sub-nesting depedendent on the telescope type (e.g. some types of sub-mm/radio telescopes have specific properties in certain sub-categories).
 
 - **Gamma-ray telescope name**
     - **Electromagnetic spectrum coverage (i.e. optical, IR, radio etc)**

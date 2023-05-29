@@ -22,7 +22,7 @@ Most APIs will involve unique (within POLIS) IDs. To avoid any privacy issues an
 Within an Observing Site all Observatories and/or instruments can have optional unique IDs. Globally they could be identified using the following convention: `ObservingSiteID:::LocalID`
 
 ### Bootstrapping a new POLIS provider
-In order to launch a new POLIS site, data should be initialised using a known site. This project maintains a list of root URLs to well known sites that could be used to read the initial information. It is strongly reccomended, that the administrators of a new POLIS provider announce the new provider to at least one of the known sites in order to be made available to the network of providers. Currently, there is only a single know POLIS provider: `polis.observer`.
+In order to launch a new POLIS site, data should be initialised using a known site. This project maintains a list of root URLs to well known sites that could be used to read the initial information. It is strongly recommended, that the administrators of a new POLIS provider announce the new provider to at least one of the known sites in order to be made available to the network of providers. Currently, there is only a single know POLIS provider: `polis.observer`.
 
 ### Data formats
 Both JSON and XML data formats are supported by POLIS because of its richness, support for schema, and schema validation. It is recommended to use XML whenever possible.
